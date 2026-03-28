@@ -1,8 +1,14 @@
-[]
 [
   {
     "id": 1,
-    "email": "aloo@gmail.com",
+    "username": "zain",
+    "email": "aloo@gal.com",
     "password": "secret123"
+  },
+  {
+    "id": 2,
+    "username": "Zain Ur Rehman",
+    "email": "zain015976@gmail.com",
+    "password": "helloworld"
   }
 ]
