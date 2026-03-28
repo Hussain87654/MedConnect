@@ -7,6 +7,7 @@ interface CardProps {
   className?: string;
   hover?: boolean;
   padding?: "none" | "sm" | "md" | "lg";
+  style?: React.CSSProperties;
 }
 
 export default function Card({
@@ -14,6 +15,7 @@ export default function Card({
   className = "",
   hover = false,
   padding = "md",
+  style,
 }: CardProps) {
   const paddingStyles = {
     none: "",
@@ -27,6 +29,7 @@ export default function Card({
       className={`bg-white rounded-xl shadow-lg border border-gray-100 ${
         paddingStyles[padding]
       } ${hover ? "hover:shadow-xl hover:-translate-y-1 transition-all duration-300" : ""} ${className}`}
+      style={style}
     >
       {children}
     </div>
