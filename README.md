@@ -8,3 +8,4 @@ Auth: NextAuth.js | Deployment: Vercel
 Course: Front-End Development — SMIT
 Instructor: Talal Ahmed
 Date Issued: March 25, 2026
+hello world
