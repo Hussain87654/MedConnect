@@ -1,17 +1,14 @@
-<<<<<<< HEAD
 [
   {
     "id": 1,
-    "username": "zain",
-    "email": "aloo@gal.com",
-    "password": "secret123"
+    "username": "hussain",
+    "email": "hussain@gmail.com",
+    "password": "hussain12"
   },
   {
     "id": 2,
-    "username": "Zain Ur Rehman",
-    "email": "zain015976@gmail.com",
-    "password": "helloworld"
+    "username": "zain",
+    "email": "zain@gmail.com",
+    "password": "zainzai"
   }
 ]
-=======
->>>>>>> ecff40072b27f2bc44b384a86a2c63620aab06d4
