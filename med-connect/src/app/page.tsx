@@ -14,17 +14,17 @@ const teamMembers = [
   },
   {
     name: "Zain",
-    role: "UI/UX Designer",
+    role: "Project Manager",
     image: "Z",
   },
   {
     name: "Asher",
-    role: "Backend Engineer",
+    role: "Frontend Engineer",
     image: "A",
   },
   {
     name: "Bilal",
-    role: "Project Manager",
+    role: "Backend Engineer",
     image: "B",
   },
 ];
