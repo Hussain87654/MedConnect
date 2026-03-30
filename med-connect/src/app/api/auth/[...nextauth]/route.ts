@@ -40,15 +40,32 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid email or password");
         }
 
-        // 5. Success: Return user data for the session
+        // 5. Success: Return user data for the session (include role)
         return {
           id: user.id.toString(),
           name: user.username,
           email: user.email,
+          role: user.role || "patient", // Default to patient if role is undefined
         };
       }
     })
   ],
+  callbacks: {
+    async jwt({ token, user }: { token: any; user: any }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({ session, token }: { session: any; token: any }) {
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.role = token.role || "patient";
+      }
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },

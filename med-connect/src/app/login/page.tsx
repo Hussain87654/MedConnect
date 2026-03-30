@@ -5,6 +5,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react"; // NextAuth helper
 import { Button, Card, Input } from "@/components";
+import { CustomCursor } from "@/components/CustomCursor";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -35,13 +36,15 @@ export default function LoginPage() {
       setError(result.error);
     } else {
       // Success! User ko dashboard par bhej dain
-      router.push("/patient"); // Default dashboard
+      router.push("/dashboard"); // Unified dashboard with role-based rendering
       router.refresh(); // Session update karne ke liye
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-linear-to-b from-blue-50 to-white">
+    <>
+      <CustomCursor />
+      <div className="min-h-screen flex flex-col bg-linear-to-b from-blue-50 to-white">
       {/* Header */}
       <header className="bg-white border-b border-gray-200">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -145,6 +148,7 @@ export default function LoginPage() {
           {/* Quick Links Dashboard shortcuts rahen ge */}
         </div>
       </main>
-    </div>
+      </div>
+    </>
   );
 }

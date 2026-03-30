@@ -1,15 +1,19 @@
 [
   {
     "id": 1,
-    "username": "asher",
-    "email": "asher@gmail.com",
-    "password": "asher"
+    "username": "Admin User",
+    "email": "admin@test.com",
+    "password": "$2b$12$dgrjBhVWcj4Tm/2raPN5ReshXunnehrCy//axTDhWKXYqvtHOKBba",
+    "role": "admin",
+    "createdAt": "2026-03-29T00:00:00.000Z"
   },
   {
     "id": 2,
-    "username": "zain",
-    "email": "zain@gmail.com",
-    "password": "zain"
+    "username": "Dr. Smith",
+    "email": "doctor@test.com",
+    "password": "$2b$12$ShBtzfKqt.4DjzErZP.9qetP5Qova8IcGOeLyh9heMQ8YGc/i39X2",
+    "role": "doctor",
+    "createdAt": "2026-03-29T00:00:00.000Z"
   },
   {
     "id": 3,
@@ -22,5 +26,37 @@
     "username": "hussain",
     "email": "hussian@gmail.com",
     "password": "$2b$12$fZ6tAeOXOHV/fwPlXHJvauln9fjUi1gnKgqw9qSMD.BB.WwCaTLom"
+  },
+  {
+    "id": 5,
+    "username": "Reception Staff",
+    "email": "reception@test.com",
+    "password": "$2b$12$p9oVudEXexIk/F7p1I6Lcub6eejfnLuTr8Xqw85qldIVWKsW8Qp3S",
+    "role": "receptionist",
+    "createdAt": "2026-03-29T00:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "username": "John Patient",
+    "email": "patient1@test.com",
+    "password": "$2b$12$8MLBunwJz80/NIL3e4trLeUcQSjJIZfL3z9CaeTtwuyeOY4CfcERe",
+    "role": "patient",
+    "createdAt": "2026-03-29T00:00:00.000Z"
+  },
+  {
+    "id": 7,
+    "username": "Asim Munir",
+    "email": "merijindh@gmail.com",
+    "password": "$2b$12$M1szO6BuP1xkhn/db3x8z.bLYhCdVcLyB9W.zBS0RXbP3aRNkMiI.",
+    "role": "patient",
+    "createdAt": "2026-03-29T13:48:09.691Z"
+  },
+  {
+    "id": 8,
+    "username": "Asher",
+    "email": "asherkhalid2002@gmail.com",
+    "password": "$2b$12$Huo.iHApyWI8e/iX/03ptehLKr30oFKrWjwF1yrK8b3pQg92wShJO",
+    "role": "doctor",
+    "createdAt": "2026-03-29T13:49:01.242Z"
   }
 ]
