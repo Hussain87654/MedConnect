@@ -58,5 +58,13 @@
     "password": "$2b$12$Huo.iHApyWI8e/iX/03ptehLKr30oFKrWjwF1yrK8b3pQg92wShJO",
     "role": "doctor",
     "createdAt": "2026-03-29T13:49:01.242Z"
+  },
+  {
+    "id": 9,
+    "username": "zain ur rehman",
+    "email": "zainurrehman@gmail.com",
+    "password": "$2b$12$pmwxV9bsuLcIqTmXcl0vWuJX6.FAcwIr.i0Cx3xTFK5v7dz37bTA6",
+    "role": "patient",
+    "createdAt": "2026-03-30T21:01:30.995Z"
   }
 ]

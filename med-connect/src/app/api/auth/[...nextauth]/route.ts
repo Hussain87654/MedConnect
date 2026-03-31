@@ -1,12 +1,18 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { getAllUsers, verifyPassword, UserData } from "../../../../../services/authService"; 
+import GoogleProvider from "next-auth/providers/google";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/lib/prisma";
+import { compare } from "bcrypt";
 
 export const authOptions: NextAuthOptions = {
-  session: {
-    strategy: "jwt",
-  },
+  adapter: PrismaAdapter(prisma) as any, 
+  session: { strategy: "jwt" },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {
@@ -14,65 +20,45 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // 1. Validation
-        if (!credentials?.email || !credentials?.password) {
-          throw new Error("Email and password are required");
-        }
+        if (!credentials?.email || !credentials?.password) return null;
 
-        // 2. Fetch Users
-        const users: UserData[] = getAllUsers();
-        
-        // 3. Find User
-        const user = users.find((u) => u.email.toLowerCase() === credentials.email.toLowerCase());
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email.toLowerCase() }
+        });
 
-        if (!user) {
-          throw new Error("No user found with this email");
-        }
+        if (!user || !user.password) throw new Error("No user found");
 
-        // 4. Verify Password (IMPORTANT: Must be awaited)
-        if (!user.password) {
-          throw new Error("Invalid user data");
-        }
+        const isValid = await compare(credentials.password, user.password);
+        if (!isValid) throw new Error("Wrong password");
 
-        const isPasswordCorrect = await verifyPassword(credentials.password, user.password);
-
-        if (!isPasswordCorrect) {
-          throw new Error("Invalid email or password");
-        }
-
-        // 5. Success: Return user data for the session (include role)
-        return {
-          id: user.id.toString(),
-          name: user.username,
-          email: user.email,
-          role: user.role || "patient", // Default to patient if role is undefined
-        };
+        return { id: user.id, name: user.name, email: user.email, role: user.role };
       }
     })
   ],
   callbacks: {
-    async jwt({ token, user }: { token: any; user: any }) {
+    async jwt({ token, user, account }) {
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = (user as any).role;
       }
       return token;
     },
-    async session({ session, token }: { session: any; token: any }) {
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.role = token.role || "patient";
+        (session.user as any).id = token.id;
+        (session.user as any).role = token.role;
       }
       return session;
-    },
+    }
   },
-  pages: {
-    signIn: "/login",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
-  debug: process.env.NODE_ENV === "development",
+  events: {
+    async createUser({ user }) {
+      await prisma.patient.create({
+        data: { userId: user.id }
+      });
+    }
+  }
 };
 
 const handler = NextAuth(authOptions);
-
 export { handler as GET, handler as POST };
