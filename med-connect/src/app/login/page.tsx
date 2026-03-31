@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { signIn } from "next-auth/react"; // NextAuth helper
+import { signIn } from "next-auth/react";
 import { Button, Card, Input } from "@/components";
 import { CustomCursor } from "@/components/CustomCursor";
 
@@ -26,18 +26,17 @@ export default function LoginPage() {
     const result = await signIn("credentials", {
       email: formData.email,
       password: formData.password,
-      redirect: false, // Page refresh rokne ke liye
+      redirect: false,
+      callbackUrl: "/patient-dashboard",
     });
 
     setIsLoading(false);
 
     if (result?.error) {
-      // Agar error aaye (e.g., Invalid credentials)
       setError(result.error);
     } else {
-      // Success! User ko dashboard par bhej dain
-      router.push("/dashboard"); // Unified dashboard with role-based rendering
-      router.refresh(); // Session update karne ke liye
+      router.push("/patient"); 
+      router.refresh();
     }
   };
 

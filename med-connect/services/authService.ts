@@ -1,6 +1,6 @@
 import { hash } from "bcrypt";
-import { prisma } from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
+import {prisma} from '../src/app/api/lib/prisma'
 
 export async function saveData(name: string, email: string, password: string) {
   const found = await prisma.user.findUnique({
@@ -11,7 +11,6 @@ export async function saveData(name: string, email: string, password: string) {
 
   const hashedPassword = await hash(password, 12);
 
-  // 'tx' ko 'Prisma.TransactionClient' ki type do
   return await prisma.$transaction(async (tx: Prisma.TransactionClient) => {
     const newUser = await tx.user.create({
       data: {
