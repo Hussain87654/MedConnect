@@ -93,7 +93,6 @@ export async function updateUserRole(id: string, newRole: UserRole) {
   }
 }
 
-// 7. Get All Doctors (Database filter)
 export async function getAllDoctors() {
   return await prisma.user.findMany({
     where: { role: "DOCTOR" },
