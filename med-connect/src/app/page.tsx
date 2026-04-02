@@ -121,7 +121,7 @@ export default function HomePage() {
   return (
     <>
       <CustomCursor />
-      <div className="min-h-screen flex flex-col bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 overflow-x-hidden">
+      <div className="min-h-screen flex flex-col bg-linear-to-br from-slate-50 via-blue-50/30 to-slate-50 overflow-x-hidden">
       <Header transparent />
 
       <main className="flex-1">
@@ -131,7 +131,7 @@ export default function HomePage() {
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-40 -right-40 w-96 h-96 bg-blue-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float"></div>
             <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-40 animate-float delay-500"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float delay-1000"></div>
+            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-125 h-125 bg-emerald-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-float delay-1000"></div>
           </div>
 
           <div className="max-w-7xl mx-auto relative z-10">
@@ -145,7 +145,7 @@ export default function HomePage() {
               {/* Main Heading */}
               <h1 className="animate-fade-in-up text-5xl md:text-7xl font-bold text-gray-900 mb-6 tracking-tight delay-100 leading-tight">
                 Welcome to{" "}
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent animate-linear-shift">
+                <span className="bg-linear-to-r from-blue-600 via-purple-600 to-blue-700 bg-clip-text text-transparent animate-linear-shift">
                   MedConnect
                 </span>
               </h1>
@@ -160,7 +160,7 @@ export default function HomePage() {
               {/* CTA Buttons */}
               <div className="animate-fade-in-up flex flex-col sm:flex-row items-center justify-center gap-4 delay-300">
                 <Link href="/login">
-                  <Button size="lg" className="min-w-48 shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 hover:-translate-y-1 transition-all bg-gradient-to-r from-blue-600 to-blue-700">
+                  <Button size="lg" className="min-w-48 shadow-xl shadow-blue-500/30 hover:shadow-2xl hover:shadow-blue-500/40 hover:-translate-y-1 transition-all bg-linear-to-r from-blue-600 to-blue-700">
                     Login
                   </Button>
                 </Link>
@@ -183,7 +183,7 @@ export default function HomePage() {
                     key={index}
                     className="group text-center p-5 rounded-2xl bg-white/60 backdrop-blur-sm hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-white/50"
                   >
-                    <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
+                    <div className="text-4xl md:text-5xl font-bold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent group-hover:scale-110 transition-transform duration-300">
                       {stat.value}
                     </div>
                     <div className="text-gray-600 mt-2 font-medium">{stat.label}</div>
@@ -213,7 +213,7 @@ export default function HomePage() {
 
         {/* About Section */}
         <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white relative overflow-hidden">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-blue-500"></div>
+          <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-blue-500 via-purple-500 to-blue-500"></div>
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">ABOUT US</span>
@@ -235,7 +235,7 @@ export default function HomePage() {
                   className="text-center group animate-fade-in-up hover-lift p-8 border-0 shadow-lg"
                   style={{ animationDelay: `${index * 100 + 200}ms` }}
                 >
-                  <div className={`w-20 h-20 bg-gradient-to-br ${feature.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
+                  <div className={`w-20 h-20 bg-linear-to-br ${feature.color} rounded-2xl flex items-center justify-center text-white mx-auto mb-6 group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
                     {feature.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-gray-900 mb-3">
@@ -249,7 +249,7 @@ export default function HomePage() {
         </section>
 
         {/* How It Works */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-blue-50 via-white to-purple-50/30">
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-blue-50 via-white to-purple-50/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-20">
               <span className="inline-block px-4 py-1.5 bg-purple-100 text-purple-700 rounded-full text-sm font-semibold mb-4">GET STARTED</span>
@@ -263,7 +263,7 @@ export default function HomePage() {
 
             <div className="grid md:grid-cols-3 gap-8 relative">
               {/* Connection Lines */}
-              <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-1 bg-gradient-to-r from-blue-300 via-purple-300 to-blue-300 rounded-full"></div>
+              <div className="hidden md:block absolute top-16 left-[20%] right-[20%] h-1 bg-linear-to-r from-blue-300 via-purple-300 to-blue-300 rounded-full"></div>
 
               {[
                 {
@@ -294,7 +294,7 @@ export default function HomePage() {
                   style={{ animationDelay: `${index * 200}ms` }}
                 >
                   <div className="relative inline-block mb-8">
-                    <div className={`w-24 h-24 bg-gradient-to-br ${item.color} rounded-3xl flex items-center justify-center text-5xl shadow-xl hover:scale-110 transition-transform duration-300`}>
+                    <div className={`w-24 h-24 bg-linear-to-br ${item.color} rounded-3xl flex items-center justify-center text-5xl shadow-xl hover:scale-110 transition-transform duration-300`}>
                       {item.icon}
                     </div>
                     <div className="absolute -top-2 -right-2 w-8 h-8 bg-white rounded-full flex items-center justify-center text-sm font-bold text-gray-800 shadow-lg border-2 border-gray-100">
@@ -338,7 +338,7 @@ export default function HomePage() {
                   </div>
                   <p className="text-gray-700 leading-relaxed mb-6 italic">"{testimonial.text}"</p>
                   <div className="flex items-center space-x-4">
-                    <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white font-bold">
                       {testimonial.avatar}
                     </div>
                     <div>
@@ -353,7 +353,7 @@ export default function HomePage() {
         </section>
 
         {/* Team Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-blue-50/30">
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-linear-to-br from-slate-50 to-blue-50/30">
           <div className="max-w-7xl mx-auto">
             <div className="text-center mb-16">
               <span className="inline-block px-4 py-1.5 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-4">OUR TEAM</span>
@@ -376,7 +376,7 @@ export default function HomePage() {
                 >
                   <div className="relative p-8">
                     <div className="relative mb-4">
-                      <div className="w-28 h-28 bg-gradient-to-br from-blue-500 via-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-xl">
+                      <div className="w-28 h-28 bg-linear-to-br from-blue-500 via-purple-500 to-blue-600 rounded-full flex items-center justify-center text-white text-4xl font-bold mx-auto group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-xl">
                         {member.image}
                       </div>
                       <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-emerald-500 rounded-full border-4 border-white animate-bounce-subtle"></div>
@@ -393,7 +393,7 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-600 via-purple-600 to-blue-700 relative overflow-hidden">
+        <section className="py-24 px-4 sm:px-6 lg:px-8 bg-linear-to-r from-blue-600 via-purple-600 to-blue-700 relative overflow-hidden">
           {/* Animated Background */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-full">

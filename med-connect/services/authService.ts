@@ -1,5 +1,5 @@
 import { hash, compare } from "bcrypt";
-import { Prisma } from "@prisma/client";
+import type { Prisma } from "@prisma/client";
 import { prisma } from "../src/app/api/lib/prisma";
 import path from "path";
 import fs from "fs";
