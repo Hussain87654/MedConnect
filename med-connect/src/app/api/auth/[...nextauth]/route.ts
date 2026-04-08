@@ -1,16 +1,14 @@
 import NextAuth, { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-import { PrismaAdapter } from "@auth/prisma-adapter"; // Add this
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { compare } from "bcrypt";
 import { prisma } from "../../lib/prisma";
 
 export const authOptions: NextAuthOptions = {
-  // 1. Adapter add karo taake Google users DB mein save hon
-  adapter: PrismaAdapter(prisma),
+  adapter: PrismaAdapter(prisma) as any,
   session: { strategy: "jwt" },
   
-  // 2. Secret lazmi add karo (Yehi error tha!)
   secret: process.env.NEXTAUTH_SECRET, 
 
   providers: [
