@@ -48,6 +48,7 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [loading, setLoading] = useState(true);
   const [showNewAppointment, setShowNewAppointment] = useState(false);
+  const [showProfileForm, setShowProfileForm] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [appointmentForm, setAppointmentForm] = useState({
     date: "",
@@ -167,6 +168,17 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
           </button>
         </div>
       </div>
+
+      {/* Complete Profile Button */}
+      <button 
+        onClick={() => setShowProfileForm(true)}
+        className="w-full bg-linear-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold py-4 px-6 rounded-xl shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
+      >
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+        </svg>
+        <span>Complete Your Profile as a Patient</span>
+      </button>
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -341,8 +353,24 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
         )}
       </Card>
 
-      {/* Patient Profile Section */}
-      <PatientForm />
+      {/* Patient Profile Section Modal */}
+      {showProfileForm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" style={{ zIndex: 100 }}>
+          <div className="relative w-full max-w-3xl mx-auto h-[90vh] overflow-y-auto rounded-2xl no-scrollbar">
+            <div className="sticky top-0 right-0 flex justify-end p-2 -mb-12 z-10 pointer-events-none">
+              <button
+                onClick={() => setShowProfileForm(false)}
+                className="text-white bg-slate-900/40 hover:bg-red-500 backdrop-blur-md p-2 rounded-full transition-colors pointer-events-auto shadow-lg"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <PatientForm />
+          </div>
+        </div>
+      )}
 
       {/* New Appointment Modal */}
       {showNewAppointment && (

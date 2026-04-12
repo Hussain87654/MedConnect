@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import { saveDoctorProfile } from '@/actions/doctorAction'; 
+import { saveDoctorProfile } from '../app/action/doctorAction';
 
 export default function DoctorProfileForm() {
   const [loading, setLoading] = useState(false);
@@ -20,7 +20,7 @@ export default function DoctorProfileForm() {
   const hndlesbmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
-    
+
     const result = await saveDoctorProfile(frmDta);
 
     if (result.success) {
@@ -32,28 +32,28 @@ export default function DoctorProfileForm() {
   };
 
   const specializations = [
-    "General Physician", "Cardiologist", "Dermatologist", 
-    "Neurologist", "Pediatrician", "Psychiatrist", 
+    "General Physician", "Cardiologist", "Dermatologist",
+    "Neurologist", "Pediatrician", "Psychiatrist",
     "Orthopedic", "Gynecologist"
   ];
 
   return (
     <div className="w-full max-w-xl mx-auto my-10 px-4">
       <div className="bg-white rounded-2xl shadow-2xl overflow-hidden border border-slate-100">
-        
-        <div className="bg-gradient-to-r from-blue-600 to-indigo-700 p-6 text-white text-center">
+
+        <div className="bg-linear-to-r from-blue-600 to-indigo-700 p-6 text-white text-center">
           <h2 className="text-2xl font-bold">Doctor Profile</h2>
           <p className="text-blue-100 text-sm opacity-90 font-medium">Enter your professional details for your profile</p>
         </div>
 
         <form onSubmit={hndlesbmit} className="p-8 space-y-5">
-          
+
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1">Specialization</label>
-            <select 
-              name="specialization" 
-              value={frmDta.specialization} 
-              onChange={hndlechnge} 
+            <select
+              name="specialization"
+              value={frmDta.specialization}
+              onChange={hndlechnge}
               className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700"
               required
             >
@@ -64,63 +64,63 @@ export default function DoctorProfileForm() {
 
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1">Qualifications</label>
-            <input 
-              type="text" 
-              name="qualifications" 
+            <input
+              type="text"
+              name="qualifications"
               placeholder="e.g. MBBS, FCPS"
-              value={frmDta.qualifications} 
-              onChange={hndlechnge} 
-              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700" 
-              required 
+              value={frmDta.qualifications}
+              onChange={hndlechnge}
+              className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700"
+              required
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1">Experience (Years)</label>
-              <input 
-                type="number" 
-                name="experience" 
+              <input
+                type="number"
+                name="experience"
                 placeholder="Years"
-                value={frmDta.experience} 
-                onChange={hndlechnge} 
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700" 
-                required 
+                value={frmDta.experience}
+                onChange={hndlechnge}
+                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700"
+                required
               />
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-slate-700 mb-1">Fee (PKR)</label>
-              <input 
-                type="number" 
-                name="fee" 
+              <input
+                type="number"
+                name="fee"
                 placeholder="Rs."
-                value={frmDta.fee} 
-                onChange={hndlechnge} 
-                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700" 
-                required 
+                value={frmDta.fee}
+                onChange={hndlechnge}
+                className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:bg-white outline-none transition-all duration-200 text-slate-700"
+                required
               />
             </div>
           </div>
 
           <div className="flex items-center p-4 bg-blue-50 rounded-xl border border-blue-100">
-            <input 
-              type="checkbox" 
-              name="isAvailable" 
+            <input
+              type="checkbox"
+              name="isAvailable"
               id="isAvailable"
-              checked={frmDta.isAvailable} 
-              onChange={hndlechnge} 
-              className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer" 
+              checked={frmDta.isAvailable}
+              onChange={hndlechnge}
+              className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 cursor-pointer"
             />
             <label htmlFor="isAvailable" className="ml-3 block text-sm font-medium text-blue-800 cursor-pointer">
               I am available for appointments
             </label>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             disabled={loading}
-            className="w-full bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-4 rounded-xl font-bold shadow-lg mt-2 disabled:opacity-50"
+            className="w-full bg-linear-to-r from-blue-600 to-indigo-700 text-white p-4 rounded-xl font-bold shadow-lg mt-2 disabled:opacity-50"
           >
             {loading ? "Saving..." : "Save Profile Details"}
           </button>
