@@ -6,7 +6,9 @@ datasource db {
   provider = "postgresql"
 }
 
+
 model User {
+
   id            String         @id @default(cuid())
   name          String
   email         String         @unique
@@ -17,6 +19,21 @@ model User {
   doctor        Doctor?
   patient       Patient?
   symptomChecks SymptomCheck[]
+=======
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  image         String?
+  role          Role      @default(PATIENT)
+  createdAt     DateTime? @default(now())
+  password      String?
+  emailVerified DateTime?
+  accounts      Account[]
+  doctor        Doctor?
+  patient       Patient?
+  sessions      Session[]
+
+
 }
 
 model Doctor {
@@ -71,6 +88,7 @@ model Slot {
   doctor    Doctor    @relation(fields: [doctorId], references: [id])
 }
 
+<<<<<<< HEAD
 model SymptomCheck {
   id        String   @id @default(cuid())
   userId    String
@@ -78,6 +96,32 @@ model SymptomCheck {
   advice    String
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+=======
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+>>>>>>> upstream/main
 }
 
 enum Role {

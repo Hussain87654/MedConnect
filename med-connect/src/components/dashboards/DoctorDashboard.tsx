@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Card } from "@/components";
+import DoctorProfileForm from "../DoctorProfileForm";
 
 interface Appointment {
   id: string;
@@ -45,6 +46,7 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
   const [appointments, setAppointments] = useState<Appointment[]>([]);
   const [patients, setPatients] = useState<Patient[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showProfileForm, setShowProfileForm] = useState(false);
   const [activeTab, setActiveTab] = useState<"appointments" | "patients">("appointments");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
   const [stats, setStats] = useState({
@@ -153,12 +155,34 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
       </div>
 
       {/* Complete Profile Button */}
-      <button className="w-full bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-all duration-300 flex items-center justify-center space-x-2">
+      <button
+        onClick={() => setShowProfileForm(true)}
+        className="w-full bg-linear-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-4 px-6 rounded-xl shadow-lg shadow-amber-500/20 hover:shadow-amber-500/30 transition-all duration-300 flex items-center justify-center space-x-2"
+      >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
         </svg>
         <span>Complete Your Profile as a Doctor</span>
       </button>
+
+      {/* Profile Form Modal */}
+      {showProfileForm && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" style={{ zIndex: 100 }}>
+          <div className="relative w-full max-w-xl mx-auto h-[90vh] overflow-y-auto rounded-2xl no-scrollbar">
+            <div className="sticky top-0 right-0 flex justify-end p-2 -mb-12 z-10 pointer-events-none">
+              <button
+                onClick={() => setShowProfileForm(false)}
+                className="text-white bg-slate-900/40 hover:bg-red-500 backdrop-blur-md p-2 rounded-full transition-colors pointer-events-auto"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </div>
+            <DoctorProfileForm />
+          </div>
+        </div>
+      )}
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
@@ -223,21 +247,19 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
       <div className="flex space-x-2">
         <button
           onClick={() => setActiveTab("appointments")}
-          className={`px-6 py-3 rounded-lg font-medium transition-all ${
-            activeTab === "appointments"
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === "appointments"
               ? "bg-teal-600 text-white shadow-lg"
               : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-          }`}
+            }`}
         >
           Appointments
         </button>
         <button
           onClick={() => setActiveTab("patients")}
-          className={`px-6 py-3 rounded-lg font-medium transition-all ${
-            activeTab === "patients"
+          className={`px-6 py-3 rounded-lg font-medium transition-all ${activeTab === "patients"
               ? "bg-teal-600 text-white shadow-lg"
               : "bg-slate-100 text-slate-600 hover:bg-slate-200"
-          }`}
+            }`}
         >
           My Patients
         </button>
