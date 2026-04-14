@@ -36,7 +36,7 @@ export default function LoginPage() {
       setError(result.error);
     } else {
       setTimeout(() => {
-        router.push("/patient-dashboard");
+        router.push("/dashboard");
         router.refresh();
       }, 100);
     }

@@ -1,6 +1,6 @@
 // SymptomChecker.ts
 
-export const checkSymptoms = (symptom: string): string => {
+const checkSymptoms = (symptom: string): string => {
   const s = symptom.toLowerCase().trim();
 
   // Agar user ne kuch likha hi nahi
@@ -30,3 +30,5 @@ export const checkSymptoms = (symptom: string): string => {
   // Agar kuch match na ho
   return "Advice: Your symptoms are noted. We recommend scheduling an appointment with a specialist for an accurate diagnosis.";
 };
+
+export default checkSymptoms ;

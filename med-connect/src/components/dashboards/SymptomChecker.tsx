@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { checkSymptoms } from './SymptomChecker';
+import checkSymptoms from './SymptomChecker'
 
 const SymptomChecker = () => {
   const [input, setInput] = useState('');
@@ -9,7 +9,6 @@ const SymptomChecker = () => {
     const advice = checkSymptoms(input);
     setResult(advice);
 
-    // --- Database mein save karne ka code ---
     try {
       await fetch('/api/symptoms', {
         method: 'POST',
