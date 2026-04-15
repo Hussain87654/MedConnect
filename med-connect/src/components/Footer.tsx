@@ -8,129 +8,74 @@ interface FooterProps {
 
 export default function Footer({ variant = "landing" }: FooterProps) {
   if (variant === "dashboard") {
+    // Keep original dashboard footer intact as requested ('kisi bhi logic ke sath cher char nhi karna')
     return (
       <footer className="bg-white border-t border-gray-200 py-4 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between text-sm text-gray-500">
           <p>&copy; 2026 MedConnect. All rights reserved.</p>
           <div className="flex items-center space-x-6 mt-2 sm:mt-0">
-            <Link href="#" className="hover:text-blue-600 transition-colors">
-              Privacy Policy
-            </Link>
-            <Link href="#" className="hover:text-blue-600 transition-colors">
-              Terms of Service
-            </Link>
-            <Link href="#" className="hover:text-blue-600 transition-colors">
-              Contact
-            </Link>
+            <Link href="#" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
+            <Link href="#" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
+            <Link href="#" className="hover:text-blue-600 transition-colors">Contact</Link>
           </div>
         </div>
       </footer>
     );
   }
 
+  // The new Stitch UI landing footer
   return (
-    <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          {/* Brand */}
-          <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center space-x-2 mb-4">
-              <div className="w-10 h-10 bg-linear-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </div>
-              <span className="text-2xl font-bold">MedConnect</span>
-            </div>
-            <p className="text-gray-400 max-w-md">
-              Connecting patients with healthcare professionals seamlessly. Your
-              health, our priority.
-            </p>
-          </div>
-
-          {/* Quick Links */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
-            <ul className="space-y-2">
-              <li>
-                <Link
-                  href="/"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Home
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/login"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/signup"
-                  className="text-gray-400 hover:text-white transition-colors"
-                >
-                  Sign Up
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Contact</h3>
-            <ul className="space-y-2 text-gray-400">
-              <li className="flex items-center">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                  />
-                </svg>
-                support@medconnect.com
-              </li>
-              <li className="flex items-center">
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
-                  />
-                </svg>
-                +1 (555) 123-4567
-              </li>
-            </ul>
+    <footer className="bg-[#191c1e] text-white py-20 px-8">
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
+        <div className="md:col-span-1">
+          <span className="text-2xl font-bold font-headline tracking-tight text-white mb-6 block">MedConnect</span>
+          <p className="text-slate-400 mb-8">Pioneering the future of ethereal clinical care with artificial intelligence and human empathy.</p>
+          <div className="flex gap-4">
+            <a className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#005c55] transition-all" href="#">
+              <span className="material-symbols-outlined text-sm">share</span>
+            </a>
+            <a className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-[#005c55] transition-all" href="#">
+              <span className="material-symbols-outlined text-sm">mail</span>
+            </a>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-          <p>&copy; 2026 MedConnect. All rights reserved.</p>
+        <div>
+          <h5 className="font-bold mb-6">Platform</h5>
+          <ul className="space-y-4 text-slate-400">
+            <li><a className="hover:text-white transition-colors" href="#">Find Doctors</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">AI Diagnostics</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Pricing Plans</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Mobile App</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 className="font-bold mb-6">Resources</h5>
+          <ul className="space-y-4 text-slate-400">
+            <li><a className="hover:text-white transition-colors" href="#">Health Blog</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Documentation</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">API for Clinics</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Community</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h5 className="font-bold mb-6">Legal</h5>
+          <ul className="space-y-4 text-slate-400">
+            <li><a className="hover:text-white transition-colors" href="#">Privacy Policy</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">HIPAA Compliance</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Terms of Service</a></li>
+            <li><a className="hover:text-white transition-colors" href="#">Security</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto pt-16 mt-16 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-6 text-slate-500 text-sm">
+        <p>© 2026 MedConnect Clinical Portal. All rights reserved.</p>
+        <div className="flex items-center gap-6">
+          <span>Status: Fully Operational</span>
+          <div className="w-2 h-2 rounded-full bg-[#006c4e] animate-pulse"></div>
         </div>
       </div>
     </footer>

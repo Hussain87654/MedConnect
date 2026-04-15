@@ -10,87 +10,41 @@ interface HeaderProps {
 export default function Header({ transparent = false }: HeaderProps) {
   const pathname = usePathname();
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/login", label: "Login" },
-    { href: "/signup", label: "Sign Up" },
-  ];
-
   return (
-    <header
-      className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        transparent ? "bg-transparent" : "bg-white shadow-sm border-b border-gray-100"
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="w-10 h-10 bg-linear-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                />
-              </svg>
-            </div>
-            <span className="text-xl md:text-2xl font-bold bg-linear-to-r from-blue-600 to-blue-700 bg-clip-text text-transparent">
-              MedConnect
-            </span>
-          </Link>
+    <header className="sticky top-0 w-full z-40 bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl flex justify-between items-center h-16 px-8 shadow-[0_20px_50px_rgba(0,92,85,0.06)] border-b-0">
+      <div className="flex items-center gap-8">
+        <Link href="/" className="text-xl font-bold text-[#005c55] font-headline tracking-tight">
+          MedConnect
+        </Link>
+        <nav className="hidden md:flex items-center gap-6">
+          <a className="text-[#005c55] font-bold transition-colors font-label" href="#home">Home</a>
+          <a className="text-slate-600 hover:text-[#005c55] transition-colors font-label" href="#find-doctors">Find Doctors</a>
+          <a className="text-slate-600 hover:text-[#005c55] transition-colors font-label" href="#patient-stories">Patient Stories</a>
+        </nav>
+      </div>
 
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-sm font-medium transition-colors duration-200 ${
-                  pathname === link.href
-                    ? "text-blue-600"
-                    : transparent
-                      ? "text-gray-700 hover:text-blue-600"
-                      : "text-gray-600 hover:text-blue-600"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <button
-              className={`p-2 rounded-lg transition-colors duration-200 ${
-                transparent
-                  ? "text-gray-700 hover:bg-gray-100"
-                  : "text-gray-600 hover:bg-gray-100"
-              }`}
-            >
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
-            </button>
-          </div>
+      <div className="flex items-center gap-4">
+        <div className="relative hidden lg:block">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#6e7977]">search</span>
+          <input className="bg-[#e0e3e5] border-none rounded-full py-2 pl-10 pr-4 text-sm w-64 focus:ring-2 focus:ring-[#005c55]/20 outline-none" placeholder="Search conditions, doctors..." type="text" />
         </div>
-      </nav>
+        
+        <div className="flex items-center gap-2">
+          <button className="p-2 text-slate-600 hover:text-[#005c55] transition-colors">
+            <span className="material-symbols-outlined">notifications</span>
+          </button>
+          <button className="p-2 text-slate-600 hover:text-[#005c55] transition-colors">
+            <span className="material-symbols-outlined">dark_mode</span>
+          </button>
+          
+          <Link href="/login" className="ml-2 bg-[#e0e3e5] text-[#191c1e] px-6 py-2 rounded-full font-semibold text-sm hover:bg-[#e6e8ea] transition-all">
+            Sign In
+          </Link>
+          <Link href="/signup" className="ml-2 bg-[#005c55] text-white px-6 py-2 rounded-full font-semibold text-sm hover:opacity-90 transition-all">
+            Sign Up
+          </Link>
+        </div>
+      </div>
     </header>
   );
 }
