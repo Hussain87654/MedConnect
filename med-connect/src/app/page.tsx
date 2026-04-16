@@ -2,14 +2,14 @@
 
 import React from "react";
 import Link from "next/link";
-import { Header, Footer } from "@/components"; 
+import { Header, Footer } from "@/components";
 import { CustomCursor } from "@/components/CustomCursor";
-import { 
-  Calendar, 
-  ShieldCheck, 
-  Headphones, 
-  Search, 
-  UserPlus, 
+import {
+  Calendar,
+  ShieldCheck,
+  Headphones,
+  Search,
+  UserPlus,
   Star,
   Activity
 } from "lucide-react";
@@ -27,7 +27,7 @@ const features = [
     title: "Easy Appointments",
     description: "Book appointments with doctors in just a few clicks. No more long waiting times.",
     icon: <Calendar className="w-8 h-8" />,
-    color: "from-[#005c55] to-[#0f766e]", 
+    color: "from-[#005c55] to-[#0f766e]",
   },
   {
     title: "Secure Health Records",
@@ -77,7 +77,7 @@ export default function HomePage() {
             <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
               <div className="relative z-10">
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#80f9c8] text-[#007353] font-label text-sm mb-6">
-                  <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>bolt</span>
+                  <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
                   Next-Gen Clinical Precision
                 </div>
                 <h1 className="text-6xl lg:text-7xl font-extrabold font-headline leading-[1.1] text-[#191c1e] mb-8 tracking-tight">
@@ -96,13 +96,13 @@ export default function HomePage() {
                   </button>
                 </div>
               </div>
-              
+
               <div className="relative">
                 <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#9cf2e8]/20 rounded-full blur-[100px]"></div>
                 <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#80f9c8]/20 rounded-full blur-[100px]"></div>
                 <div className="relative rounded-xl overflow-hidden shadow-2xl">
                   <img alt="Healthcare Professional" className="w-full h-[500px] object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA2EVNbh-8ixaN8C6-EDdzB6T7aG1-IQUKMUy1SYLEubUul-7kAljphZE6gxrTxnNr2pmpjD2qhizhcOzG5KcbbtG35fc9fnF_Ej1cYIBA2xYeORw_eUm2UOJWI3wgiGySc1Wt3AWzgocXoMhYFEBzeJJdeR8wS8Wti30bpQcWhiw0T2mfXUOwHqJ7jvkys08ZLboFGPnpOwopGag9WqjhrXSFNA8WGQ6StX0mQUvxQlZx0Cu6MQVfUCIDnWG-mKDHXTXmf5z6xUDV" />
-                  
+
                   {/* Glass Overlay Stats */}
                   <div className="absolute bottom-6 left-6 right-6 p-6 glass-card rounded-lg border border-white/20">
                     <div className="flex justify-between items-center">
@@ -181,7 +181,7 @@ export default function HomePage() {
                       <p className="text-[#005c55] font-semibold mb-6">Senior Cardiologist • 15 Yrs Exp</p>
                       <div className="space-y-4 mb-8">
                         <div className="flex items-center gap-3">
-                          <span className="material-symbols-outlined text-[#006c4e]" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                          <span className="material-symbols-outlined text-[#006c4e]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                           <span className="font-bold">4.98</span>
                           <span className="text-[#3e4947]">(2.4k reviews)</span>
                         </div>
@@ -208,7 +208,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold font-headline mb-1">Dr. James Wilson</h4>
                   <p className="text-[#3e4947] text-sm mb-4">Neurologist • PhD</p>
                   <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     <span className="font-bold">4.8</span>
                   </div>
                   <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
@@ -224,7 +224,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold font-headline mb-1">Dr. Elena Rodriguez</h4>
                   <p className="text-[#3e4947] text-sm mb-4">Pediatrician • MD</p>
                   <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     <span className="font-bold">5.0</span>
                   </div>
                   <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
@@ -258,14 +258,14 @@ export default function HomePage() {
                 <h2 className="text-4xl font-extrabold font-headline mb-4">Patient Stories</h2>
                 <p className="text-[#3e4947] max-w-xl mx-auto">Real experiences from our global community of patients who found healing through MedConnect.</p>
               </div>
-              
+
               <div className="grid md:grid-cols-3 gap-8">
                 {/* 1st Testimonial */}
                 <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
                   <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
                   <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1,2,3,4,5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     ))}
                   </div>
                   <p className="text-lg mb-8 text-[#191c1e]">"The clinical precision of the interface and the speed of connecting with a cardiologist was life-changing."</p>
@@ -284,8 +284,8 @@ export default function HomePage() {
                 <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
                   <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
                   <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1,2,3,4,5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     ))}
                   </div>
                   <p className="text-lg mb-8 text-[#191c1e]">"The interface is so calm and easy to navigate. I never felt overwhelmed by my medical data."</p>
@@ -304,8 +304,8 @@ export default function HomePage() {
                 <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
                   <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
                   <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1,2,3,4,5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{fontVariationSettings: "'FILL' 1"}}>star</span>
+                    {[1, 2, 3, 4, 5].map(i => (
+                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
                     ))}
                   </div>
                   <p className="text-lg mb-8 text-[#191c1e]">"Finally, a medical platform that feels like it was built for the 21st century. Fast and elegant."</p>
