@@ -18,7 +18,7 @@ export async function GET() {
       username: u.name,
       email: u.email,
       role: u.role ? u.role.toLowerCase() : "patient",
-      createdAt: u.createdAt ? u.createdAt.toISOString() : null,
+      createdAt: u.createdAt,
     }));
     return NextResponse.json({ users: safeUsers });
   } catch (e: any) {

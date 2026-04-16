@@ -13,11 +13,18 @@ function checkSymptoms(input: string): string {
   return `For "${input}": Please consult a qualified doctor for personalized medical advice. Do not self-diagnose.`;
 }
 
-const SymptomChecker = () => {
+interface SymptomCheckerProps {
+  userId?: string;
+}
+
+const SymptomChecker = ({ userId }: SymptomCheckerProps) => {
   const [input, setInput] = useState('');
   const [result, setResult] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleCheck = async () => {
+    if (!input.trim()) return;
+    setLoading(true);
     const advice = checkSymptoms(input);
     setResult(advice);
 
@@ -28,56 +35,70 @@ const SymptomChecker = () => {
         body: JSON.stringify({
           symptom: input,
           advice: advice,
-          userId: "YAHAN_USER_ID_AYEGA" // Agar authentication hai toh user ki ID pass karein
+          userId: userId || "anonymous"
         }),
       });
       console.log("Data saved to DB!");
     } catch (error) {
       console.error("Failed to save:", error);
+    } finally {
+      setLoading(false);
     }
-    // ----------------------------------------
   };
 
   return (
-    <div className="bg-white rounded-3xl p-8 shadow-xl border border-slate-100 transition-all duration-300">
-      <div className="flex items-center space-x-3 mb-6">
-        <div className="w-12 h-12 bg-blue-100 rounded-2xl flex items-center justify-center text-blue-600">
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div>
-          <h3 className="text-xl font-bold text-slate-800">Smart Symptom Checker</h3>
-          <p className="text-slate-500 text-sm">Quickly check health advice based on your symptoms</p>
-        </div>
+    <div className="bg-surface-container-low p-8 rounded-xl border-none space-y-5 relative overflow-hidden group shadow-sm transition-all hover:shadow-md">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full -mr-16 -mt-16 blur-2xl"></div>
+      
+      <div className="flex items-center gap-3">
+        <span className="material-symbols-outlined text-primary">auto_awesome</span>
+        <h3 className="font-bold text-lg text-teal-900">AI Symptom Checker</h3>
       </div>
+      
+      <p className="text-sm text-on-surface-variant leading-relaxed">
+        Describe how you're feeling. Our clinical AI will assess and suggest next steps.
+      </p>
 
-      <div className="flex flex-col md:flex-row gap-4">
-        <input 
-          type="text" 
-          value={input} 
-          onChange={(e) => setInput(e.target.value)} 
-          placeholder="Try typing 'fever' or 'headache'..."
-          className="flex-1 px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-        />
-        <button 
+      <div className="space-y-4">
+        <div className="relative">
+          <textarea
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="e.g., I have a mild headache and fever..."
+            className="w-full px-4 py-3 bg-white/50 border border-teal-100 rounded-2xl text-sm focus:ring-2 focus:ring-primary/20 outline-none transition-all resize-none min-h-[100px]"
+          />
+        </div>
+        
+        <button
           onClick={handleCheck}
-          className="bg-blue-600 text-white px-8 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-all shadow-lg shadow-blue-500/20 active:scale-95"
+          disabled={loading || !input.trim()}
+          className="w-full py-4 bg-[#005c55] text-white font-bold text-sm rounded-2xl shadow-lg shadow-[#005c55]/20 transition-all hover:shadow-[#005c55]/40 active:scale-95 disabled:opacity-50 flex items-center justify-center gap-2"
         >
-          Check Now
+          {loading ? (
+            <span className="w-5 h-5 border-2 border-white/30 border-t-white  rounded-full animate-spin"></span>
+          ) : (
+            <span className="material-symbols-outlined text-sm">bolt</span>
+          )}
+          <span>{loading ? "Analyzing..." : "Analyze Symptoms"}</span>
         </button>
       </div>
 
       {result && (
-        <div className="mt-6 p-4 bg-blue-50 rounded-2xl border border-blue-100 animate-in fade-in slide-in-from-top-2 duration-300">
-          <div className="flex items-start space-x-3">
-            <div className="mt-1 text-blue-600 font-bold">💡</div>
-            <p className="text-blue-800 leading-relaxed">{result}</p>
+        <div className="p-5 bg-secondary-container/30 border border-secondary-container/20 rounded-2xl animate-in fade-in slide-in-from-top-2 duration-300">
+          <div className="flex gap-3">
+            <span className="material-symbols-outlined text-secondary text-lg">info</span>
+            <p className="text-sm text-on-secondary-container leading-relaxed font-medium">
+              {result}
+            </p>
           </div>
         </div>
       )}
+
+      <p className="text-[10px] text-center text-on-surface-variant uppercase tracking-widest font-bold pt-2 border-t border-teal-100/30">
+        AI-Powered Clinical Analysis
+      </p>
     </div>
   );
 };
 
-export default SymptomChecker;
+export default SymptomChecker

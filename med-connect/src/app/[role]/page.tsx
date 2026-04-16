@@ -2,9 +2,10 @@
 
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { AdminDashboard, DoctorDashboard, PatientDashboard, DashboardHeader } from "@/components";
+import { useEffect, useState } from "react";
+import { AdminDashboard, DoctorDashboard, PatientDashboard, DashboardHeader, DashboardSidebar } from "@/components";
 import { CustomCursor } from "@/components/CustomCursor";
+import PatientForm from "@/components/PatientForm";
 
 interface RolePageProps {
   params: Promise<{ role: string }>;
@@ -13,6 +14,7 @@ interface RolePageProps {
 export default function RolePage({ params }: RolePageProps) {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const [showProfileForm, setShowProfileForm] = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -22,9 +24,9 @@ export default function RolePage({ params }: RolePageProps) {
 
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 to-blue-50">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 to-teal-50">
         <div className="text-center">
-          <div className="w-12 h-12 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <div className="w-12 h-12 border-4 border-[#005c55] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
           <p className="text-slate-500 font-medium">Loading...</p>
         </div>
       </div>
@@ -42,36 +44,47 @@ export default function RolePage({ params }: RolePageProps) {
     role?: string;
   };
 
-  const isStitchAdmin = user.role?.toUpperCase() === "ADMIN";
-
-  if (isStitchAdmin) {
-    return (
-      <>
-        <CustomCursor />
-        <RoleDashboard user={user} />
-      </>
-    );
-  }
+  const isPatient = user.role?.toUpperCase() === "PATIENT" || !user.role;
 
   return (
     <>
       <CustomCursor />
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50">
-        <DashboardHeader
-          userName={user.name || "User"}
-          userRole={user.role || "Patient"}
+      <div className="flex min-h-screen relative font-body bg-[#f7f9fb] text-[#191c1e]">
+        <DashboardSidebar
+          onSettingsClick={isPatient ? () => setShowProfileForm(true) : undefined}
         />
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <RoleDashboard user={user} />
+        <main className="flex-1 flex flex-col min-w-0 bg-[#f7f9fb]">
+          <DashboardHeader
+            userName={user.name || "User"}
+            userRole={user.role || "Patient"}
+          />
+          <div className="p-8 space-y-8 overflow-y-auto">
+            <RoleDashboard user={user} />
+          </div>
         </main>
       </div>
+
+      {/* Patient Profile Form Modal — triggered from Settings button */}
+      {showProfileForm && isPatient && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
+          <div className="relative w-full max-w-4xl mx-auto max-h-[95vh] overflow-y-auto rounded-3xl bg-[#f7f9fb] shadow-2xl">
+            <button
+              onClick={() => setShowProfileForm(false)}
+              className="absolute top-6 right-6 z-20 p-2 bg-white hover:bg-red-50 hover:text-red-600 rounded-full shadow-md transition-all"
+            >
+              <span className="material-symbols-outlined">close</span>
+            </button>
+            <PatientForm onClose={() => setShowProfileForm(false)} />
+          </div>
+        </div>
+      )}
     </>
   );
 }
 
 function RoleDashboard({ user }: { user: { id: string; name?: string | null; email?: string | null; role?: string } }) {
   const role = user.role?.toUpperCase();
-  
+
   switch (role) {
     case "ADMIN":
       return <AdminDashboard user={user} />;

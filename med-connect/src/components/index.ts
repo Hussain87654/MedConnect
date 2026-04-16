@@ -4,6 +4,7 @@ export { default as Input } from "./Input";
 export { default as Header } from "./Header";
 export { default as Footer } from "./Footer";
 export { default as DashboardHeader } from "./DashboardHeader";
+export { default as DashboardSidebar } from "./DashboardSidebar";
 
 // Dashboard Components
 export { AdminDashboard } from "./dashboards/AdminDashboard";

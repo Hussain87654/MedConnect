@@ -81,15 +81,15 @@ export default function HomePage() {
                   Next-Gen Clinical Precision
                 </div>
                 <h1 className="text-6xl lg:text-7xl font-extrabold font-headline leading-[1.1] text-[#191c1e] mb-8 tracking-tight">
-                  AI-Powered <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#005c55] to-[#0f766e]">Telemedicine</span> Platform
+                  AI-Powered <span className="text-transparent bg-clip-text bg-linear-to-r from-[#005c55] to-[#0f766e]">Telemedicine</span> Platform
                 </h1>
                 <p className="text-lg text-[#3e4947] leading-relaxed mb-10 max-w-xl">
                   Experience the future of healthcare. Secure, instantaneous, and intelligent consultation environments designed for the modern patient and provider.
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <button className="bg-gradient-to-br from-[#005c55] to-[#0f766e] text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 hover:shadow-xl hover:shadow-[#005c55]/20 transition-all cursor-pointer">
+                  <button className="bg-linear-to-br from-[#005c55] to-[#0f766e] text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 hover:shadow-xl hover:shadow-[#005c55]/20 transition-all cursor-pointer">
                     Book Appointment
-                    <span className="material-symbols-outlined">calendar_today</span>
+                    <span><Calendar /></span>
                   </button>
                   <button className="bg-[#e0e3e5] text-[#191c1e] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#e6e8ea] transition-all cursor-pointer">
                     Find Doctors
@@ -181,7 +181,7 @@ export default function HomePage() {
                       <p className="text-[#005c55] font-semibold mb-6">Senior Cardiologist • 15 Yrs Exp</p>
                       <div className="space-y-4 mb-8">
                         <div className="flex items-center gap-3">
-                          <span className="material-symbols-outlined text-[#006c4e]" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                          <span className="text-[#006c4e]"><Star /></span>
                           <span className="font-bold">4.98</span>
                           <span className="text-[#3e4947]">(2.4k reviews)</span>
                         </div>
@@ -208,7 +208,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold font-headline mb-1">Dr. James Wilson</h4>
                   <p className="text-[#3e4947] text-sm mb-4">Neurologist • PhD</p>
                   <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    <span className="text-[#006c4e]"><Star /></span>
                     <span className="font-bold">4.8</span>
                   </div>
                   <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
@@ -224,7 +224,7 @@ export default function HomePage() {
                   <h4 className="text-xl font-bold font-headline mb-1">Dr. Elena Rodriguez</h4>
                   <p className="text-[#3e4947] text-sm mb-4">Pediatrician • MD</p>
                   <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                    <span className="text-[#006c4e]"><Star /></span>
                     <span className="font-bold">5.0</span>
                   </div>
                   <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
@@ -265,7 +265,7 @@ export default function HomePage() {
                   <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
                   <div className="flex gap-1 text-[#006c4e] mb-6">
                     {[1, 2, 3, 4, 5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
+                      <span key={i} className="text-[#006c4e]"><Star /></span>
                     ))}
                   </div>
                   <p className="text-lg mb-8 text-[#191c1e]">"The clinical precision of the interface and the speed of connecting with a cardiologist was life-changing."</p>
