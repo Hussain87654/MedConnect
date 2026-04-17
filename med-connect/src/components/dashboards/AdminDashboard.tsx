@@ -1,6 +1,6 @@
-"use client";
-
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components";
 
 interface User {
   id: string;
@@ -81,10 +81,34 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
     }
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className="space-y-8">
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="space-y-8"
+    >
       {/* Hero Section */}
-      <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <motion.section variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-1">
           <h2 className="text-4xl font-extrabold tracking-tight font-headline text-[#191c1e]">Command Center</h2>
           <p className="text-[#3e4947] font-medium">Monitoring clinic efficiency and patient flow in real-time.</p>
@@ -98,11 +122,11 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Bento Grid Metrics */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <div className="col-span-1 bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
+      <motion.section variants={itemVariants} className="grid grid-cols-1 md:grid-cols-4 gap-6">
+        <Card tilt padding="none" className="bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#005c55] bg-[#9cf2e8] p-2 rounded-xl">groups</span>
             <span className="text-[#006c4e] font-bold text-sm">Active</span>
@@ -111,8 +135,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             <p className="text-4xl font-extrabold text-[#191c1e] font-headline">{loading ? "-" : stats.totalUsers}</p>
             <p className="text-sm font-semibold text-[#3e4947]">Total Users</p>
           </div>
-        </div>
-        <div className="col-span-1 bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
+        </Card>
+        <Card tilt padding="none" className="bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#005c55] bg-[#9cf2e8] p-2 rounded-xl">medical_services</span>
           </div>
@@ -120,8 +144,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             <p className="text-4xl font-extrabold text-[#191c1e] font-headline">{loading ? "-" : stats.totalDoctors}</p>
             <p className="text-sm font-semibold text-[#3e4947]">Specialists (Doctors)</p>
           </div>
-        </div>
-        <div className="col-span-1 bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
+        </Card>
+        <Card tilt padding="none" className="bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#005c55] bg-[#9cf2e8] p-2 rounded-xl">accessible</span>
           </div>
@@ -129,8 +153,8 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             <p className="text-4xl font-extrabold text-[#191c1e] font-headline">{loading ? "-" : stats.totalPatients}</p>
             <p className="text-sm font-semibold text-[#3e4947]">Registered Patients</p>
           </div>
-        </div>
-        <div className="col-span-1 bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
+        </Card>
+        <Card tilt padding="none" className="bg-[#f2f4f6] p-6 rounded-xl border-none flex flex-col justify-between h-40 group hover:bg-white transition-all duration-300 shadow-sm">
           <div className="flex justify-between items-start">
             <span className="material-symbols-outlined text-[#005c55] bg-[#9cf2e8] p-2 rounded-xl">speed</span>
             <span className="text-[#006c4e] font-bold text-sm">98.2%</span>
@@ -139,15 +163,15 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
             <p className="text-4xl font-extrabold text-[#191c1e] font-headline">4.8s</p>
             <p className="text-sm font-semibold text-[#3e4947]">Avg Response Time</p>
           </div>
-        </div>
-      </section>
+        </Card>
+      </motion.section>
 
       {/* Analytics & Tables Bento */}
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Main Activity Chart Column */}
         <div className="lg:col-span-2 space-y-8">
           {/* Chart Area */}
-          <div className="bg-[#f2f4f6] rounded-xl p-8 h-[400px] flex flex-col shadow-sm">
+          <motion.div whileHover={{ y: -5 }} className="bg-[#f2f4f6] rounded-xl p-8 h-[400px] flex flex-col shadow-sm border border-[#eceef0]/50">
             <div className="flex justify-between items-center mb-8">
               <div>
                 <h3 className="text-xl font-bold font-headline">Patient Inflow</h3>
@@ -159,20 +183,24 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
               </div>
             </div>
             <div className="flex-1 flex items-end justify-between gap-4 px-2">
-              <div className="w-full bg-[#005c55]/10 rounded-t-xl h-1/2 relative group transition-all hover:h-[60%]">
-                <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-[#191c1e] text-white text-[10px] px-2 py-1 rounded">240</div>
-              </div>
-              <div className="w-full bg-[#005c55]/20 rounded-t-xl h-2/3 relative group transition-all hover:h-[70%]"></div>
-              <div className="w-full bg-[#005c55]/10 rounded-t-xl h-1/3 relative group transition-all hover:h-[40%]"></div>
-              <div className="w-full bg-[#005c55]/40 rounded-t-xl h-3/4 relative group transition-all hover:h-[80%]"></div>
-              <div className="w-full bg-[#005c55]/30 rounded-t-xl h-1/2 relative group transition-all hover:h-[55%]"></div>
-              <div className="w-full bg-[#005c55] rounded-t-xl h-5/6 relative group transition-all hover:h-[90%]"></div>
-              <div className="w-full bg-[#005c55]/10 rounded-t-xl h-1/4 relative group transition-all hover:h-[30%]"></div>
+              {[0.5, 0.67, 0.33, 0.75, 0.5, 0.83, 0.25].map((height, i) => (
+                <motion.div 
+                  key={i}
+                  initial={{ height: 0 }}
+                  animate={{ height: `${height * 100}%` }}
+                  transition={{ duration: 1, delay: i * 0.1 }}
+                  className="w-full bg-[#005c55] rounded-t-xl opacity-20 hover:opacity-100 transition-opacity cursor-pointer relative group"
+                >
+                  <div className="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 bg-[#191c1e] text-white text-[10px] px-2 py-1 rounded">
+                    {Math.floor(height * 500)}
+                  </div>
+                </motion.div>
+              ))}
             </div>
             <div className="flex justify-between mt-4 px-2 text-[10px] font-bold text-[#3e4947] uppercase tracking-widest">
               <span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
             </div>
-          </div>
+          </motion.div>
 
           {/* Management Table */}
           <div className="bg-[#f2f4f6] rounded-xl overflow-hidden shadow-sm border border-[#eceef0]">
@@ -369,6 +397,6 @@ export function AdminDashboard({ user }: AdminDashboardProps) {
           </div>
         </div>
       </section>
-    </div>
+    </motion.div>
   );
 }

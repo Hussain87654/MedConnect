@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { motion } from "framer-motion";
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -12,7 +13,12 @@ export default function DashboardHeader({
   userRole = "Admin",
 }: DashboardHeaderProps) {
   return (
-    <header className="sticky top-0 w-full z-40 bg-white/80 backdrop-blur-2xl flex justify-between items-center h-16 px-8 border-b-0 shadow-[0_20px_50px_rgba(0,92,85,0.06)]">
+    <motion.header 
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+      className="sticky top-0 w-full z-40 bg-white/80 backdrop-blur-2xl flex justify-between items-center h-16 px-8 border-b-0 shadow-[0_20px_50px_rgba(0,92,85,0.06)]"
+    >
       <div className="flex items-center gap-4 flex-1">
         <div className="relative max-w-md w-full">
           <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">
@@ -27,18 +33,32 @@ export default function DashboardHeader({
       </div>
       <div className="flex items-center gap-6">
         <div className="flex items-center gap-4">
-          <button className="text-slate-600 hover:text-teal-700 transition-colors cursor-pointer">
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <Link
-            href="/"
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
             className="text-slate-600 hover:text-teal-700 transition-colors cursor-pointer"
           >
-            <span className="material-symbols-outlined">home</span>
-          </Link>
+            <span className="material-symbols-outlined">notifications</span>
+          </motion.button>
+          <motion.div
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+          >
+            <Link
+              href="/"
+              className="text-slate-600 hover:text-teal-700 transition-colors cursor-pointer"
+            >
+              <span className="material-symbols-outlined">home</span>
+            </Link>
+          </motion.div>
         </div>
         <div className="h-8 w-px bg-slate-200"></div>
-        <div className="flex items-center gap-3">
+        <motion.div 
+          initial={{ x: 20, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="flex items-center gap-3"
+        >
           <div className="text-right hidden sm:block">
             <p className="text-sm font-bold text-teal-700">{userName}</p>
             <p className="text-[10px] font-semibold text-slate-500 uppercase tracking-tighter">
@@ -48,8 +68,8 @@ export default function DashboardHeader({
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-white bg-[#005c55] ring-2 ring-[#005c55]/10">
             {userName.charAt(0).toUpperCase()}
           </div>
-        </div>
+        </motion.div>
       </div>
-    </header>
+    </motion.header>
   );
 }

@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
-import { Header, Footer } from "@/components";
+import { motion } from "framer-motion";
+import { Header, Footer, Card } from "@/components";
 import { CustomCursor } from "@/components/CustomCursor";
 import {
   Calendar,
@@ -76,17 +76,37 @@ export default function HomePage() {
           <section id="home" className="relative px-8 pt-16 pb-32 overflow-hidden">
             <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-center">
               <div className="relative z-10">
-                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#80f9c8] text-[#007353] font-label text-sm mb-6">
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#80f9c8] text-[#007353] font-label text-sm mb-6"
+                >
                   <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>bolt</span>
                   Next-Gen Clinical Precision
-                </div>
-                <h1 className="text-6xl lg:text-7xl font-extrabold font-headline leading-[1.1] text-[#191c1e] mb-8 tracking-tight">
+                </motion.div>
+                <motion.h1 
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.1 }}
+                  className="text-6xl lg:text-7xl font-extrabold font-headline leading-[1.1] text-[#191c1e] mb-8 tracking-tight"
+                >
                   AI-Powered <span className="text-transparent bg-clip-text bg-linear-to-r from-[#005c55] to-[#0f766e]">Telemedicine</span> Platform
-                </h1>
-                <p className="text-lg text-[#3e4947] leading-relaxed mb-10 max-w-xl">
+                </motion.h1>
+                <motion.p 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="text-lg text-[#3e4947] leading-relaxed mb-10 max-w-xl"
+                >
                   Experience the future of healthcare. Secure, instantaneous, and intelligent consultation environments designed for the modern patient and provider.
-                </p>
-                <div className="flex flex-wrap gap-4">
+                </motion.p>
+                <motion.div 
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.3 }}
+                  className="flex flex-wrap gap-4"
+                >
                   <button className="bg-linear-to-br from-[#005c55] to-[#0f766e] text-white px-8 py-4 rounded-full font-semibold text-lg flex items-center gap-2 hover:shadow-xl hover:shadow-[#005c55]/20 transition-all cursor-pointer">
                     Book Appointment
                     <span><Calendar /></span>
@@ -94,17 +114,32 @@ export default function HomePage() {
                   <button className="bg-[#e0e3e5] text-[#191c1e] px-8 py-4 rounded-full font-semibold text-lg hover:bg-[#e6e8ea] transition-all cursor-pointer">
                     Find Doctors
                   </button>
-                </div>
+                </motion.div>
               </div>
 
-              <div className="relative">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ duration: 1, delay: 0.2, type: "spring" }}
+                className="relative"
+              >
                 <div className="absolute -top-24 -right-24 w-96 h-96 bg-[#9cf2e8]/20 rounded-full blur-[100px]"></div>
                 <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-[#80f9c8]/20 rounded-full blur-[100px]"></div>
-                <div className="relative rounded-xl overflow-hidden shadow-2xl">
-                  <img alt="Healthcare Professional" className="w-full h-[500px] object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA2EVNbh-8ixaN8C6-EDdzB6T7aG1-IQUKMUy1SYLEubUul-7kAljphZE6gxrTxnNr2pmpjD2qhizhcOzG5KcbbtG35fc9fnF_Ej1cYIBA2xYeORw_eUm2UOJWI3wgiGySc1Wt3AWzgocXoMhYFEBzeJJdeR8wS8Wti30bpQcWhiw0T2mfXUOwHqJ7jvkys08ZLboFGPnpOwopGag9WqjhrXSFNA8WGQ6StX0mQUvxQlZx0Cu6MQVfUCIDnWG-mKDHXTXmf5z6xUDV" />
+                <div className="relative rounded-xl overflow-hidden shadow-2xl perspective-1000">
+                  <motion.div
+                    animate={{ y: [0, -20, 0] }}
+                    transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                  >
+                    <img alt="Healthcare Professional" className="w-full h-[500px] object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA2EVNbh-8ixaN8C6-EDdzB6T7aG1-IQUKMUy1SYLEubUul-7kAljphZE6gxrTxnNr2pmpjD2qhizhcOzG5KcbbtG35fc9fnF_Ej1cYIBA2xYeORw_eUm2UOJWI3wgiGySc1Wt3AWzgocXoMhYFEBzeJJdeR8wS8Wti30bpQcWhiw0T2mfXUOwHqJ7jvkys08ZLboFGPnpOwopGag9WqjhrXSFNA8WGQ6StX0mQUvxQlZx0Cu6MQVfUCIDnWG-mKDHXTXmf5z6xUDV" />
+                  </motion.div>
 
                   {/* Glass Overlay Stats */}
-                  <div className="absolute bottom-6 left-6 right-6 p-6 glass-card rounded-lg border border-white/20">
+                  <motion.div 
+                    initial={{ x: 50, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 1, duration: 0.8 }}
+                    className="absolute bottom-6 left-6 right-6 p-6 glass-card rounded-lg border border-white/20"
+                  >
                     <div className="flex justify-between items-center">
                       <div>
                         <p className="text-[#3e4947] text-xs uppercase tracking-widest font-bold">Active Consultations</p>
@@ -116,9 +151,9 @@ export default function HomePage() {
                         <div className="w-10 h-10 rounded-full border-2 border-white bg-[#005c55] text-white flex items-center justify-center text-xs font-bold">+2k</div>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
-              </div>
+              </motion.div>
             </div>
           </section>
 
@@ -126,22 +161,24 @@ export default function HomePage() {
           <section className="py-20 bg-[#f2f4f6]">
             <div className="max-w-7xl mx-auto px-8">
               <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <p className="text-4xl font-extrabold font-headline text-[#005c55] mb-2">99.8%</p>
-                  <p className="text-[#3e4947] font-medium">Uptime Guarantee</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-4xl font-extrabold font-headline text-[#005c55] mb-2">500+</p>
-                  <p className="text-[#3e4947] font-medium">Expert Specialists</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-4xl font-extrabold font-headline text-[#005c55] mb-2">12M+</p>
-                  <p className="text-[#3e4947] font-medium">Successful Consults</p>
-                </div>
-                <div className="text-center">
-                  <p className="text-4xl font-extrabold font-headline text-[#005c55] mb-2">4.9/5</p>
-                  <p className="text-[#3e4947] font-medium">Patient Satisfaction</p>
-                </div>
+                {[
+                  { val: "99.8%", label: "Uptime Guarantee" },
+                  { val: "500+", label: "Expert Specialists" },
+                  { val: "12M+", label: "Successful Consults" },
+                  { val: "4.9/5", label: "Patient Satisfaction" }
+                ].map((stat, i) => (
+                  <motion.div 
+                    key={i}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.1, duration: 0.5 }}
+                    className="text-center"
+                  >
+                    <p className="text-4xl font-extrabold font-headline text-[#005c55] mb-2">{stat.val}</p>
+                    <p className="text-[#3e4947] font-medium">{stat.label}</p>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </section>
@@ -149,7 +186,13 @@ export default function HomePage() {
           {/* Discovery & Filters */}
           <section id="find-doctors" className="py-32 px-8">
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="flex flex-col md:flex-row md:items-end justify-between gap-8 mb-16"
+              >
                 <div className="max-w-2xl">
                   <h2 className="text-4xl font-extrabold font-headline mb-4 tracking-tight">Discover Specialists</h2>
                   <p className="text-[#3e4947] text-lg">Filter through our curated network of certified medical professionals using AI-enhanced matching.</p>
@@ -168,72 +211,101 @@ export default function HomePage() {
                     <span className="material-symbols-outlined text-sm">location_on</span>
                   </div>
                 </div>
-              </div>
+              </motion.div>
 
               {/* Bento Grid Layout for Doctors */}
               <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
                 {/* Large Featured Card */}
-                <div className="md:col-span-8 bg-[#f2f4f6] rounded-xl overflow-hidden group relative p-8">
-                  <div className="flex flex-col md:flex-row gap-8 h-full">
-                    <div className="md:w-1/2">
-                      <span className="bg-[#006c4e] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Top Rated</span>
-                      <h3 className="text-3xl font-bold font-headline mb-4">Dr. Sarah Chen</h3>
-                      <p className="text-[#005c55] font-semibold mb-6">Senior Cardiologist • 15 Yrs Exp</p>
-                      <div className="space-y-4 mb-8">
-                        <div className="flex items-center gap-3">
-                          <span className="text-[#006c4e]"><Star /></span>
-                          <span className="font-bold">4.98</span>
-                          <span className="text-[#3e4947]">(2.4k reviews)</span>
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  className="md:col-span-8"
+                >
+                  <Card tilt padding="none" className="h-full bg-[#f2f4f6]">
+                    <div className="flex flex-col md:flex-row gap-8 h-full p-8">
+                      <div className="md:w-1/2">
+                        <span className="bg-[#006c4e] text-white px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 inline-block">Top Rated</span>
+                        <h3 className="text-3xl font-bold font-headline mb-4">Dr. Sarah Chen</h3>
+                        <p className="text-[#005c55] font-semibold mb-6">Senior Cardiologist • 15 Yrs Exp</p>
+                        <div className="space-y-4 mb-8">
+                          <div className="flex items-center gap-3">
+                            <span className="text-[#006c4e]"><Star /></span>
+                            <span className="font-bold">4.98</span>
+                            <span className="text-[#3e4947]">(2.4k reviews)</span>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="material-symbols-outlined text-[#005c55]">schedule</span>
+                            <span className="text-[#191c1e]">Available Today, 2:00 PM</span>
+                          </div>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <span className="material-symbols-outlined text-[#005c55]">schedule</span>
-                          <span className="text-[#191c1e]">Available Today, 2:00 PM</span>
-                        </div>
+                        <button className="bg-[#005c55] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform cursor-pointer">
+                          Book Fast Track
+                        </button>
                       </div>
-                      <button className="bg-[#005c55] text-white px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform cursor-pointer">
-                        Book Fast Track
-                      </button>
+                      <div className="md:w-1/2 relative min-h-[300px]">
+                        <img alt="Dr. Sarah Chen" className="absolute inset-0 w-full h-full object-cover rounded-xl shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlmbZ7Dbn6ifw8xbxUnlPCCzS1PudosDHfYcvn00xpyOcDQSOQxBDbQ9xTwA_Lzki2kPjDKNsLVw4B9i396EfzHcfeBRWdt4eRJvhl127sJXBuQ2tNVrfX1UAnBIASuH-z6W1lEWY8V2jKdovTECTGui1lOvO82GIJK9z6WfsGB-gOTsaesndUXMfrPr2T9fZyJOTUXCMJrRx0MutvY81Kcl_YMi5O0FqND9WX0zqrxQ1RG1Kr2qNkmOD95jjkkFnP_4IA4P7tnzbN" />
+                      </div>
                     </div>
-                    <div className="md:w-1/2 relative min-h-[300px]">
-                      <img alt="Dr. Sarah Chen" className="absolute inset-0 w-full h-full object-cover rounded-xl shadow-lg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlmbZ7Dbn6ifw8xbxUnlPCCzS1PudosDHfYcvn00xpyOcDQSOQxBDbQ9xTwA_Lzki2kPjDKNsLVw4B9i396EfzHcfeBRWdt4eRJvhl127sJXBuQ2tNVrfX1UAnBIASuH-z6W1lEWY8V2jKdovTECTGui1lOvO82GIJK9z6WfsGB-gOTsaesndUXMfrPr2T9fZyJOTUXCMJrRx0MutvY81Kcl_YMi5O0FqND9WX0zqrxQ1RG1Kr2qNkmOD95jjkkFnP_4IA4P7tnzbN" />
-                    </div>
-                  </div>
-                </div>
+                  </Card>
+                </motion.div>
 
                 {/* Small Card 1 */}
-                <div className="md:col-span-4 bg-[#f2f4f6] rounded-xl p-6 flex flex-col items-center text-center group">
-                  <div className="w-24 h-24 rounded-full overflow-hidden mb-6 ring-4 ring-white shadow-md">
-                    <img alt="Dr. James Wilson" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGA3HsN9YgI2xLsRyPAxIfjh_ZgonmbJyqQZF50PVpO1Vx2CEivcPzAgoOVmfyz5q-2cNU_BSEUEOKWV-EkJDfCSdxQAhzJ7KgAN4Ecyr_Vvunr3QqvyYv0hk_MJE5rS1LnKNHhC9cU498YVpsmmgDCRb4pJSCg2e8yRbqubnBOeASIiIT9GlBvQT1pHD6XRN9YEsnQb2kM6RUwiRSyK_cMimKqrtqFFgNgvZ67MyZXiXQVBTCrzs-f9CYsR0xtrXIRxHalgWDtU_k" />
-                  </div>
-                  <h4 className="text-xl font-bold font-headline mb-1">Dr. James Wilson</h4>
-                  <p className="text-[#3e4947] text-sm mb-4">Neurologist • PhD</p>
-                  <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="text-[#006c4e]"><Star /></span>
-                    <span className="font-bold">4.8</span>
-                  </div>
-                  <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
-                    View Profile
-                  </button>
-                </div>
+                <motion.div 
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 }}
+                  className="md:col-span-4"
+                >
+                  <Card tilt className="h-full flex flex-col items-center text-center bg-[#f2f4f6]">
+                    <div className="w-24 h-24 rounded-full overflow-hidden mb-6 ring-4 ring-white shadow-md">
+                      <img alt="Dr. James Wilson" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGA3HsN9YgI2xLsRyPAxIfjh_ZgonmbJyqQZF50PVpO1Vx2CEivcPzAgoOVmfyz5q-2cNU_BSEUEOKWV-EkJDfCSdxQAhzJ7KgAN4Ecyr_Vvunr3QqvyYv0hk_MJE5rS1LnKNHhC9cU498YVpsmmgDCRb4pJSCg2e8yRbqubnBOeASIiIT9GlBvQT1pHD6XRN9YEsnQb2kM6RUwiRSyK_cMimKqrtqFFgNgvZ67MyZXiXQVBTCrzs-f9CYsR0xtrXIRxHalgWDtU_k" />
+                    </div>
+                    <h4 className="text-xl font-bold font-headline mb-1">Dr. James Wilson</h4>
+                    <p className="text-[#3e4947] text-sm mb-4">Neurologist • PhD</p>
+                    <div className="flex items-center gap-1 text-[#006c4e] mb-6">
+                      <span className="text-[#006c4e]"><Star /></span>
+                      <span className="font-bold">4.8</span>
+                    </div>
+                    <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
+                      View Profile
+                    </button>
+                  </Card>
+                </motion.div>
 
                 {/* Small Card 2 */}
-                <div className="md:col-span-4 bg-[#f2f4f6] rounded-xl p-6 flex flex-col items-center text-center group">
-                  <div className="w-24 h-24 rounded-full overflow-hidden mb-6 ring-4 ring-white shadow-md">
-                    <img alt="Dr. Elena Rodriguez" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCExRcpQNVif87ElsezSYRSB_3bgDDrU7O6dz7q8Aqb_SR_IAojELLrqvoD_Ka2nzbu9qse4S4w88VT7huqJcqZch900Xu_yQMsMDndy3i_p51xyVd8K4lTYHoU2fRx5D5EmijbkfBHe7j1X4-jm1cAsJxVCEOCBc4_WXPMlMfVJ_gs98atmcOC6Sthig9sfQ82Oj4m0EPoJks2VnHuMabOVZRqXcL3V2WTb46z4i9ZdYUKzRxlOmEQorBbf6ijtk7LCgzM8Ia3YX9K" />
-                  </div>
-                  <h4 className="text-xl font-bold font-headline mb-1">Dr. Elena Rodriguez</h4>
-                  <p className="text-[#3e4947] text-sm mb-4">Pediatrician • MD</p>
-                  <div className="flex items-center gap-1 text-[#006c4e] mb-6">
-                    <span className="text-[#006c4e]"><Star /></span>
-                    <span className="font-bold">5.0</span>
-                  </div>
-                  <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
-                    View Profile
-                  </button>
-                </div>
+                <motion.div 
+                   initial={{ opacity: 0, y: 20 }}
+                   whileInView={{ opacity: 1, y: 0 }}
+                   viewport={{ once: true }}
+                   transition={{ delay: 0.1 }}
+                   className="md:col-span-4"
+                >
+                  <Card tilt className="h-full flex flex-col items-center text-center bg-[#f2f4f6]">
+                    <div className="w-24 h-24 rounded-full overflow-hidden mb-6 ring-4 ring-white shadow-md">
+                      <img alt="Dr. Elena Rodriguez" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCExRcpQNVif87ElsezSYRSB_3bgDDrU7O6dz7q8Aqb_SR_IAojELLrqvoD_Ka2nzbu9qse4S4w88VT7huqJcqZch900Xu_yQMsMDndy3i_p51xyVd8K4lTYHoU2fRx5D5EmijbkfBHe7j1X4-jm1cAsJxVCEOCBc4_WXPMlMfVJ_gs98atmcOC6Sthig9sfQ82Oj4m0EPoJks2VnHuMabOVZRqXcL3V2WTb46z4i9ZdYUKzRxlOmEQorBbf6ijtk7LCgzM8Ia3YX9K" />
+                    </div>
+                    <h4 className="text-xl font-bold font-headline mb-1">Dr. Elena Rodriguez</h4>
+                    <p className="text-[#3e4947] text-sm mb-4">Pediatrician • MD</p>
+                    <div className="flex items-center gap-1 text-[#006c4e] mb-6">
+                      <span className="text-[#006c4e]"><Star /></span>
+                      <span className="font-bold">5.0</span>
+                    </div>
+                    <button className="w-full py-3 rounded-full border border-[#bdc9c6] text-[#005c55] font-bold hover:bg-[#005c55] hover:text-white transition-all cursor-pointer">
+                      View Profile
+                    </button>
+                  </Card>
+                </motion.div>
 
                 {/* Feature Block */}
-                <div className="md:col-span-8 bg-[#005c55] text-white rounded-xl p-8 flex flex-col justify-center">
+                <motion.div 
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.3 }}
+                  className="md:col-span-8 bg-[#005c55] text-white rounded-xl p-8 flex flex-col justify-center"
+                >
                   <div className="flex items-start gap-6">
                     <div className="w-16 h-16 bg-[#0f766e] rounded-lg flex items-center justify-center shrink-0">
                       <span className="material-symbols-outlined text-3xl">psychology</span>
@@ -246,7 +318,7 @@ export default function HomePage() {
                       </button>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               </div>
             </div>
           </section>
@@ -254,71 +326,64 @@ export default function HomePage() {
           {/* Testimonials */}
           <section id="patient-stories" className="py-32 bg-white relative">
             <div className="max-w-7xl mx-auto px-8">
-              <div className="text-center mb-16">
+              <motion.div 
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center mb-16"
+              >
                 <h2 className="text-4xl font-extrabold font-headline mb-4">Patient Stories</h2>
                 <p className="text-[#3e4947] max-w-xl mx-auto">Real experiences from our global community of patients who found healing through MedConnect.</p>
-              </div>
+              </motion.div>
 
               <div className="grid md:grid-cols-3 gap-8">
-                {/* 1st Testimonial */}
-                <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
-                  <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
-                  <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <span key={i} className="text-[#006c4e]"><Star /></span>
-                    ))}
-                  </div>
-                  <p className="text-lg mb-8 text-[#191c1e]">"The clinical precision of the interface and the speed of connecting with a cardiologist was life-changing."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden">
-                      <img alt="Client" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdAW-7JYr8RE10CbaBi5Wz_Q0FfpWG1RBTXq48tFQrvZ5NL35Qv_1jLhshsegKXTYUI9iXZP4eHpVyfyd5nnft6uNdwlXYKFmh4oNABSys0QPYbpn1bHtuNiTjaUa8bkRRbOld268UqprKBWJsooYu5-vUJtwYsdcTBgXhbJCdxF1_tKckkb42-95Zuzj12uIB-1TNLX-Mo4kMrUPpjXxfAHda4LwrUXmNNHpuRsIpt4stxEdKqGFqrMEwsarpDa5ACdc6_Dxx-SSF" />
-                    </div>
-                    <div>
-                      <p className="font-bold">David Markham</p>
-                      <p className="text-xs text-[#3e4947] uppercase tracking-tighter">Heart Patient</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 2nd Testimonial */}
-                <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
-                  <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
-                  <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-lg mb-8 text-[#191c1e]">"The interface is so calm and easy to navigate. I never felt overwhelmed by my medical data."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden">
-                      <img alt="Client" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEHMPZv3PjjYVphbGQx1A65AjpLEAGV7XlrXXiFU4GFG80VusLBiq_egPKPqoAI3xzRfC5m0tLPVX6bbhh-k6eLpAi0sGs3fNxqJRBmw3RN0jNibTZZkjwX1pTx1A2S4x_DaB7BWvs4JUqh_zoc7MpHwh5bxprj6oloNLgFeA4xRWQUK-QWwuHTtnTXdtbLobWNXmOHkCkTx_MAMKbVgJJVgarRpiAgYeMI-Qla6n7K9T2h-tMEekhrSNLFZyMcFXYGV0FEqYWDgAs" />
-                    </div>
-                    <div>
-                      <p className="font-bold">Lydia Thorne</p>
-                      <p className="text-xs text-[#3e4947] uppercase tracking-tighter">Chronic Care User</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* 3rd Testimonial */}
-                <div className="p-8 rounded-xl bg-[#f2f4f6] relative">
-                  <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
-                  <div className="flex gap-1 text-[#006c4e] mb-6">
-                    {[1, 2, 3, 4, 5].map(i => (
-                      <span key={i} className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>star</span>
-                    ))}
-                  </div>
-                  <p className="text-lg mb-8 text-[#191c1e]">"Finally, a medical platform that feels like it was built for the 21st century. Fast and elegant."</p>
-                  <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full overflow-hidden">
-                      <img alt="Client" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8yM-Z8fmhIghEE7QOQUGszb-clSEKmA_AFvic9cEmB4498JuDzr_vjCZhNp1RZRzysxTCczgACQKMWFbVJ5igbUtssQP9DVRnO3p3GlWHnSXwGq30P4vcO2ZADWBZPk3HFXUkEyxkrEIBc48GM6GM7uGIjPurNf88n_dC8uSMZLX1UmGixJInjLEcq6No4WOWn4_OeQ347ke72mhLfYfU-xqeTAERmJ5pUZ_oOPdd1h7-w8L7E0at76_tABLozJKqEJ6YQCmLOvb-" />
-                    </div>
-                    <div>
-                      <p className="font-bold">Marcus Vane</p>
-                      <p className="text-xs text-[#3e4947] uppercase tracking-tighter">Tech Executive</p>
-                    </div>
-                  </div>
-                </div>
+                {[
+                  {
+                    name: "David Markham",
+                    role: "Heart Patient",
+                    text: "The clinical precision of the interface and the speed of connecting with a cardiologist was life-changing.",
+                    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAdAW-7JYr8RE10CbaBi5Wz_Q0FfpWG1RBTXq48tFQrvZ5NL35Qv_1jLhshsegKXTYUI9iXZP4eHpVyfyd5nnft6uNdwlXYKFmh4oNABSys0QPYbpn1bHtuNiTjaUa8bkRRbOld268UqprKBWJsooYu5-vUJtwYsdcTBgXhbJCdxF1_tKckkb42-95Zuzj12uIB-1TNLX-Mo4kMrUPpjXxfAHda4LwrUXmNNHpuRsIpt4stxEdKqGFqrMEwsarpDa5ACdc6_Dxx-SSF"
+                  },
+                  {
+                    name: "Lydia Thorne",
+                    role: "Chronic Care User",
+                    text: "The interface is so calm and easy to navigate. I never felt overwhelmed by my medical data.",
+                    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuAEHMPZv3PjjYVphbGQx1A65AjpLEAGV7XlrXXiFU4GFG80VusLBiq_egPKPqoAI3xzRfC5m0tLPVX6bbhh-k6eLpAi0sGs3fNxqJRBmw3RN0jNibTZZkjwX1pTx1A2S4x_DaB7BWvs4JUqh_zoc7MpHwh5bxprj6oloNLgFeA4xRWQUK-QWwuHTtnTXdtbLobWNXmOHkCkTx_MAMKbVgJJVgarRpiAgYeMI-Qla6n7K9T2h-tMEekhrSNLFZyMcFXYGV0FEqYWDgAs"
+                  },
+                  {
+                    name: "Marcus Vane",
+                    role: "Tech Executive",
+                    text: "Finally, a medical platform that feels like it was built for the 21st century. Fast and elegant.",
+                    img: "https://lh3.googleusercontent.com/aida-public/AB6AXuD8yM-Z8fmhIghEE7QOQUGszb-clSEKmA_AFvic9cEmB4498JuDzr_vjCZhNp1RZRzysxTCczgACQKMWFbVJ5igbUtssQP9DVRnO3p3GlWHnSXwGq30P4vcO2ZADWBZPk3HFXUkEyxkrEIBc48GM6GM7uGIjPurNf88n_dC8uSMZLX1UmGixJInjLEcq6No4WOWn4_OeQ347ke72mhLfYfU-xqeTAERmJ5pUZ_oOPdd1h7-w8L7E0at76_tABLozJKqEJ6YQCmLOvb-"
+                  }
+                ].map((testimonial, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: i * 0.2 }}
+                  >
+                    <Card tilt className="h-full bg-[#f2f4f6] relative">
+                      <span className="material-symbols-outlined text-[#0f766e]/20 text-6xl absolute top-4 right-4">format_quote</span>
+                      <div className="flex gap-1 text-[#006c4e] mb-6">
+                        {[1, 2, 3, 4, 5].map(star => (
+                          <span key={star} className="text-[#006c4e]"><Star /></span>
+                        ))}
+                      </div>
+                      <p className="text-lg mb-8 text-[#191c1e]">"{testimonial.text}"</p>
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 rounded-full overflow-hidden">
+                          <img alt={testimonial.name} className="w-full h-full object-cover" src={testimonial.img} />
+                        </div>
+                        <div>
+                          <p className="font-bold">{testimonial.name}</p>
+                          <p className="text-xs text-[#3e4947] uppercase tracking-tighter">{testimonial.role}</p>
+                        </div>
+                      </div>
+                    </Card>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </section>

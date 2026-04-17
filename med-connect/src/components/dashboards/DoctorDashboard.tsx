@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components";
 import DoctorProfileForm from "../DoctorProfileForm";
 
 interface Appointment {
@@ -65,6 +67,7 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
     upcoming: 0,
     completed: 0,
     totalPatients: 0,
+    pending: 0,
   });
 
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
@@ -78,6 +81,25 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
     refills: 0,
     instructions: "",
   });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
 
   useEffect(() => {
     fetchData();
@@ -126,6 +148,7 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
       ).length,
       completed: appts.filter((apt) => apt.status === "completed").length,
       totalPatients: uniquePatientIds.size,
+      pending: appts.filter((apt) => apt.status === "pending").length,
     });
   };
 
@@ -170,7 +193,6 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
 
       if (res.ok) {
         setShowPrescriptionModal(false);
-        // Reset form
         setPrescriptionForm({
           medication: "",
           dosage: "",
@@ -181,7 +203,6 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
         });
         setSelectedPatientId("");
         setPatientSearchTerm("");
-        // Refresh prescriptions
         fetchPrescriptions();
       } else {
         const error = await res.json();
@@ -212,72 +233,45 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
   };
 
   return (
-    <div className="space-y-8 max-w-7xl mx-auto">
-
-      {/* ── Hero Stats Section ── */}
-      <section className="grid grid-cols-1 md:grid-cols-4 gap-6">
-
-        {/* Hero Card */}
-        <div className="col-span-1 md:col-span-2 bg-linear-to-br from-teal-900 to-[#0f766e] p-8 rounded-xl text-white relative overflow-hidden flex flex-col justify-between shadow-lg">
-          <div className="relative z-10">
-            <h2 className="text-2xl font-bold mb-2 font-headline">
-              Good morning, Dr. {user.name?.split(" ")[0] || "Doctor"}.
-            </h2>
-            <p className="text-teal-100/80 text-sm max-w-xs">
-              You have {stats.today} appointments scheduled for today.{" "}
-              {stats.upcoming > 0 && `${stats.upcoming} are upcoming consultations.`}
-            </p>
-          </div>
-          <div className="relative z-10 mt-8 flex gap-3 flex-wrap">
-            <button
-              onClick={() => setActiveTab("appointments")}
-              className="bg-white text-teal-900 px-5 py-2.5 rounded-full font-bold text-sm hover:bg-teal-50 transition-colors"
-            >
-              View Schedule
-            </button>
-            <button
-              onClick={() => setShowProfileForm(true)}
-              className="bg-teal-800/30 backdrop-blur-md text-white px-5 py-2.5 rounded-full font-bold text-sm hover:bg-teal-800/50 transition-colors"
-            >
-              Update Profile
-            </button>
-          </div>
-          <span className="material-symbols-outlined absolute -right-8 -bottom-8 text-[160px] opacity-10 pointer-events-none">
-            medical_services
-          </span>
+    <motion.div 
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="space-y-10 max-w-7xl mx-auto"
+    >
+      {/* ── Header: Greeting & Quick Stats ── */}
+      <motion.section variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div className="lg:col-span-2 space-y-2">
+          <h1 className="text-4xl font-extrabold tracking-tight text-teal-900 font-headline">
+            Welcome back, Dr. {user.name || "Specialist"}.
+          </h1>
+          <p className="text-on-surface-variant text-lg">
+            You have {stats.pending} pending appointment requests and {stats.today} consultations scheduled for today.
+          </p>
         </div>
-
-        {/* Stat: Patient Satisfaction (Appointments Today) */}
-        <div className="bg-[#f2f4f6] p-6 rounded-xl flex flex-col justify-between group hover:bg-white hover:shadow-xl hover:shadow-teal-900/5 transition-all duration-300">
+        
+        <Card tilt padding="sm" className="bg-[#005c55] text-white flex flex-col justify-between border-none">
           <div className="flex justify-between items-start">
-            <div className="p-3 bg-[#80f9c8]/30 rounded-2xl">
-              <span className="material-symbols-outlined text-[#006c4e]">analytics</span>
-            </div>
-            <span className="text-emerald-600 text-xs font-bold flex items-center gap-1">
-              <span className="material-symbols-outlined text-sm">trending_up</span>
-              +{stats.completed}
-            </span>
+            <span className="text-xs font-bold uppercase tracking-widest opacity-80">Today's Load</span>
+            <span className="material-symbols-outlined opacity-40">calendar_today</span>
           </div>
           <div>
-            <p className="text-3xl font-bold text-[#191c1e]">{stats.today}</p>
-            <p className="text-sm text-[#3e4947] font-medium">Today&apos;s Appointments</p>
+            <h3 className="text-3xl font-black">{stats.today}</h3>
+            <p className="text-[10px] font-bold opacity-60 uppercase tracking-tighter mt-1">Confirmed Sessions</p>
           </div>
-        </div>
+        </Card>
 
-        {/* Stat: Avg Stats */}
-        <div className="bg-[#f2f4f6] p-6 rounded-xl flex flex-col justify-between group hover:bg-white hover:shadow-xl hover:shadow-teal-900/5 transition-all duration-300">
+        <Card tilt padding="sm" className="bg-[#80f9c8] text-[#00513a] flex flex-col justify-between border-none">
           <div className="flex justify-between items-start">
-            <div className="p-3 bg-[#a2eeff]/20 rounded-2xl">
-              <span className="material-symbols-outlined text-[#005a66]">group</span>
-            </div>
-            <span className="text-[#3e4947] text-xs font-bold">Total</span>
+            <span className="text-xs font-bold uppercase tracking-widest opacity-80">Pending Tasks</span>
+            <span className="material-symbols-outlined opacity-40">pending_actions</span>
           </div>
           <div>
-            <p className="text-3xl font-bold text-[#191c1e]">{stats.totalPatients}</p>
-            <p className="text-sm text-[#3e4947] font-medium">Total Patients</p>
+            <h3 className="text-3xl font-black">{stats.pending}</h3>
+            <p className="text-[10px] font-bold opacity-60 uppercase tracking-tighter mt-1">Requires Action</p>
           </div>
-        </div>
-      </section>
+        </Card>
+      </motion.section>
 
       {/* ── Bento Content Grid ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -849,6 +843,6 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
         </div>
       )}
 
-    </div>
+    </motion.div>
   );
 }

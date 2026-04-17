@@ -1,7 +1,8 @@
-"use client";
 import SymptomChecker from './SymptomChecker';
 import React, { useState, useEffect } from "react";
 import PatientForm from "../PatientForm";
+import { motion, AnimatePresence } from "framer-motion";
+import { Card } from "@/components";
 
 interface Appointment {
   id: string;
@@ -81,7 +82,7 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
 
   const [patientProfile, setPatientProfile] = useState<PatientProfile | null>(null);
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
-  const [availableSlots, setAvailableSlots] = useState<{id: string, time: string}[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<{ id: string, time: string }[]>([]);
   const [loadingSlots, setLoadingSlots] = useState(false);
   const [loadingPrescriptions, setLoadingPrescriptions] = useState(true);
 
@@ -222,11 +223,35 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
     );
   };
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
-    <div className="space-y-10 max-w-7xl mx-auto">
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={containerVariants}
+      className="space-y-10 max-w-7xl mx-auto"
+    >
 
       {/* ── Hero Greeting & Stats ── */}
-      <section className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+      <motion.section variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
 
         {/* Left: greeting + stat cards */}
         <div className="lg:col-span-2 space-y-4">
@@ -260,27 +285,30 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
 
           {/* Stat cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
-            <div className="bg-[#005c55] text-white p-6 rounded-2xl flex items-center justify-between shadow-lg shadow-[#005c55]/10">
-              <div>
+            <Card tilt padding="none" className="bg-[#005c55] text-white p-6 rounded-2xl flex items-center justify-between shadow-lg shadow-[#005c55]/10 border-none">
+              <div className="relative z-10">
                 <p className="text-sm opacity-80 mb-1">Upcoming Appointments</p>
                 <h3 className="text-2xl font-bold">{stats.upcoming} Active</h3>
                 <p className="text-sm mt-2 font-medium opacity-80">Confirmed consultations</p>
               </div>
               <span className="material-symbols-outlined text-4xl opacity-40">calendar_month</span>
-            </div>
-            <div className="bg-[#80f9c8] text-[#00513a] p-6 rounded-2xl flex items-center justify-between">
-              <div>
+            </Card>
+            <Card tilt padding="none" className="bg-[#80f9c8] text-[#00513a] p-6 rounded-2xl flex items-center justify-between border-none">
+              <div className="relative z-10">
                 <p className="text-sm opacity-80 mb-1">Completed Visits</p>
                 <h3 className="text-2xl font-bold">{stats.completed} Reports</h3>
                 <p className="text-sm mt-2 font-medium opacity-80">Digital records available</p>
               </div>
               <span className="material-symbols-outlined text-4xl opacity-40">description</span>
-            </div>
+            </Card>
           </div>
         </div>
 
         {/* Right: AI Symptom Checker */}
-        <div className="bg-[#f2f4f6] p-8 rounded-xl space-y-4 relative overflow-hidden">
+        <motion.div
+          whileHover={{ scale: 1.01 }}
+          className="bg-[#f2f4f6] p-8 rounded-xl space-y-4 relative overflow-hidden shadow-sm"
+        >
           <div className="absolute top-0 right-0 w-32 h-32 bg-[#005c55]/5 rounded-full -mr-16 -mt-16 blur-2xl" />
           <div className="flex items-center gap-3">
             <span className="material-symbols-outlined text-[#005c55]">auto_awesome</span>
@@ -293,8 +321,8 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
           <p className="text-[10px] text-center text-[#3e4947] uppercase tracking-widest font-semibold pt-2">
             AI-Powered Analysis
           </p>
-        </div>
-      </section>
+        </motion.div>
+      </motion.section>
 
       {/* ── Main Content Grid ── */}
       <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
@@ -350,13 +378,12 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
                         </div>
                       </div>
                       <span
-                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                          apt.status === "confirmed"
+                        className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${apt.status === "confirmed"
                             ? "bg-[#80f9c8] text-[#007353]"
                             : apt.status === "pending"
-                            ? "bg-amber-100 text-amber-700"
-                            : "bg-[#e0e3e5] text-slate-500"
-                        }`}
+                              ? "bg-amber-100 text-amber-700"
+                              : "bg-[#e0e3e5] text-slate-500"
+                          }`}
                       >
                         {apt.status}
                       </span>
@@ -388,7 +415,7 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
                 Digital Scripts
               </span>
             </div>
-            
+
             {loadingPrescriptions ? (
               <div className="p-8 text-center bg-[#f2f4f6] rounded-2xl">
                 <div className="w-8 h-8 border-3 border-[#005c55] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
@@ -415,13 +442,12 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
                           </p>
                         </div>
                       </div>
-                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
-                        px.status === "ACTIVE" ? "bg-teal-50 text-teal-700" : "bg-slate-50 text-slate-400"
-                      }`}>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${px.status === "ACTIVE" ? "bg-teal-50 text-teal-700" : "bg-slate-50 text-slate-400"
+                        }`}>
                         {px.status}
                       </span>
                     </div>
-                    
+
                     <div className="grid grid-cols-2 gap-4 py-3 border-t border-slate-50">
                       <div>
                         <p className="text-[10px] text-slate-400 font-bold uppercase">Dosage</p>
@@ -440,7 +466,7 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
                         <p className="text-sm font-semibold text-[#191c1e]">{new Date(px.createdAt).toLocaleDateString()}</p>
                       </div>
                     </div>
-                    
+
                     {px.instructions && (
                       <div className="mt-3 p-3 bg-slate-50 rounded-xl">
                         <p className="text-[10px] text-[#3e4947] italic">Note: {px.instructions}</p>
@@ -531,138 +557,161 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
       </div>
 
       {/* ── Profile Form Modal ── */}
-      {showProfileForm && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="relative w-full max-w-3xl mx-auto h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl">
-            <button
-              onClick={() => setShowProfileForm(false)}
-              className="absolute top-6 right-6 z-20 p-2 bg-slate-100 hover:bg-red-100 hover:text-red-600 rounded-full transition-all"
+      <AnimatePresence>
+        {showProfileForm && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              className="relative w-full max-w-3xl mx-auto h-[90vh] overflow-y-auto rounded-3xl bg-white shadow-2xl"
             >
-              <span className="material-symbols-outlined">close</span>
-            </button>
-            <PatientForm onClose={() => {
-              setShowProfileForm(false);
-              fetchPatientProfile();
-            }} />
-          </div>
-        </div>
-      )}
-
-      {/* ── New Appointment Modal ── */}
-      {showNewAppointment && (
-        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
-          <div className="w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl">
-            <div className="bg-[#005c55] px-8 py-6 text-white flex justify-between items-center">
-              <div>
-                <h3 className="text-xl font-bold font-headline">Book Consultation</h3>
-                <p className="text-xs opacity-80 font-medium">Select your preferred date and time</p>
-              </div>
               <button
-                onClick={() => setShowNewAppointment(false)}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors"
+                onClick={() => setShowProfileForm(false)}
+                className="absolute top-6 right-6 z-20 p-2 bg-slate-100 hover:bg-red-100 hover:text-red-600 rounded-full transition-all"
               >
                 <span className="material-symbols-outlined">close</span>
               </button>
-            </div>
-            <form onSubmit={handleNewAppointment} className="p-8 space-y-5">
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Specialist</label>
-                <select
-                  value={selectedDoctor}
-                  onChange={(e) => setSelectedDoctor(e.target.value)}
-                  required
-                  className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all"
+              <PatientForm onClose={() => {
+                setShowProfileForm(false);
+                fetchPatientProfile();
+              }} />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ── New Appointment Modal ── */}
+      <AnimatePresence>
+        {showNewAppointment && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.9, y: 20, opacity: 0 }}
+              animate={{ scale: 1, y: 0, opacity: 1 }}
+              exit={{ scale: 0.9, y: 20, opacity: 0 }}
+              className="w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl"
+            >
+              <div className="bg-[#005c55] px-8 py-6 text-white flex justify-between items-center">
+                <div>
+                  <h3 className="text-xl font-bold font-headline">Book Consultation</h3>
+                  <p className="text-xs opacity-80 font-medium">Select your preferred date and time</p>
+                </div>
+                <button
+                  onClick={() => setShowNewAppointment(false)}
+                  className="p-2 hover:bg-white/10 rounded-full transition-colors"
                 >
-                  <option value="">Choose a doctor</option>
-                  {doctors.map((doctor) => (
-                    <option key={doctor.id} value={doctor.id}>
-                      Dr. {doctor.username}{doctor.specialization ? ` - ${doctor.specialization}` : ""}
-                    </option>
-                  ))}
-                </select>
+                  <span className="material-symbols-outlined">close</span>
+                </button>
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleNewAppointment} className="p-8 space-y-5">
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Preferred Date</label>
-                  <input
-                    type="date"
-                    value={appointmentForm.date}
-                    onChange={(e) => setAppointmentForm({ ...appointmentForm, date: e.target.value })}
+                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Specialist</label>
+                  <select
+                    value={selectedDoctor}
+                    onChange={(e) => setSelectedDoctor(e.target.value)}
                     required
-                    min={new Date().toISOString().split("T")[0]}
                     className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all"
+                  >
+                    <option value="">Choose a doctor</option>
+                    {doctors.map((doctor) => (
+                      <option key={doctor.id} value={doctor.id}>
+                        Dr. {doctor.username}{doctor.specialization ? ` - ${doctor.specialization}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-1">
+                    <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Preferred Date</label>
+                    <input
+                      type="date"
+                      value={appointmentForm.date}
+                      onChange={(e) => setAppointmentForm({ ...appointmentForm, date: e.target.value })}
+                      required
+                      min={new Date().toISOString().split("T")[0]}
+                      className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all"
+                    />
+                  </div>
+                  <div className="md:col-span-2 space-y-2">
+                    <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Authorized Time Slots</label>
+
+                    {loadingSlots ? (
+                      <div className="flex items-center gap-2 p-4 bg-[#f2f4f6] rounded-2xl animate-pulse">
+                        <div className="w-4 h-4 border-2 border-[#005c55] border-t-transparent rounded-full animate-spin" />
+                        <span className="text-xs font-bold text-slate-400">Fetching available hours...</span>
+                      </div>
+                    ) : !selectedDoctor || !appointmentForm.date ? (
+                      <div className="p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-center">
+                        <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                          Select a doctor and date to<br />view available slots
+                        </p>
+                      </div>
+                    ) : availableSlots.length === 0 ? (
+                      <div className="p-4 bg-[#ffdad6]/20 border-2 border-dashed border-[#ffdad6] rounded-2xl text-center">
+                        <p className="text-[10px] font-bold text-[#93000a] uppercase tracking-widest">
+                          No available slots for this day
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="grid grid-cols-2 gap-2">
+                        {availableSlots.map((slot) => (
+                          <button
+                            key={slot.id}
+                            type="button"
+                            onClick={() => setAppointmentForm({ ...appointmentForm, time: slot.time })}
+                            className={`px-4 py-3 rounded-2xl text-xs font-black transition-all border-2 ${appointmentForm.time === slot.time
+                                ? 'bg-[#005c55] border-[#005c55] text-white shadow-lg'
+                                : 'bg-[#f2f4f6] border-transparent text-[#3e4947] hover:bg-[#e0e3e5]'
+                              }`}
+                          >
+                            {slot.time}
+                          </button>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Consultation Reason</label>
+                  <textarea
+                    value={appointmentForm.reason}
+                    onChange={(e) => setAppointmentForm({ ...appointmentForm, reason: e.target.value })}
+                    rows={3}
+                    placeholder="e.g. Follow-up on blood report, sharp back pain..."
+                    className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all resize-none"
                   />
                 </div>
-                <div className="md:col-span-2 space-y-2">
-                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Authorized Time Slots</label>
-                  
-                  {loadingSlots ? (
-                    <div className="flex items-center gap-2 p-4 bg-[#f2f4f6] rounded-2xl animate-pulse">
-                      <div className="w-4 h-4 border-2 border-[#005c55] border-t-transparent rounded-full animate-spin" />
-                      <span className="text-xs font-bold text-slate-400">Fetching available hours...</span>
-                    </div>
-                  ) : !selectedDoctor || !appointmentForm.date ? (
-                    <div className="p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-center">
-                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
-                         Select a doctor and date to<br/>view available slots
-                       </p>
-                    </div>
-                  ) : availableSlots.length === 0 ? (
-                    <div className="p-4 bg-[#ffdad6]/20 border-2 border-dashed border-[#ffdad6] rounded-2xl text-center">
-                       <p className="text-[10px] font-bold text-[#93000a] uppercase tracking-widest">
-                         No available slots for this day
-                       </p>
-                    </div>
-                  ) : (
-                    <div className="grid grid-cols-2 gap-2">
-                      {availableSlots.map((slot) => (
-                        <button
-                          key={slot.id}
-                          type="button"
-                          onClick={() => setAppointmentForm({ ...appointmentForm, time: slot.time })}
-                          className={`px-4 py-3 rounded-2xl text-xs font-black transition-all border-2 ${
-                            appointmentForm.time === slot.time 
-                            ? 'bg-[#005c55] border-[#005c55] text-white shadow-lg' 
-                            : 'bg-[#f2f4f6] border-transparent text-[#3e4947] hover:bg-[#e0e3e5]'
-                          }`}
-                        >
-                          {slot.time}
-                        </button>
-                      ))}
-                    </div>
-                  )}
+                <div className="flex gap-4 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setShowNewAppointment(false)}
+                    className="flex-1 py-4 text-slate-500 font-bold text-sm bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all"
+                  >
+                    Discard
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="flex-1 py-4 bg-[#005c55] text-white font-bold text-sm rounded-2xl shadow-lg shadow-[#005c55]/20 hover:shadow-[#005c55]/40 transition-all disabled:opacity-50 active:scale-95"
+                  >
+                    {submitting ? "Booking..." : "Confirm Booking"}
+                  </button>
                 </div>
-              </div>
-              <div className="space-y-1">
-                <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Consultation Reason</label>
-                <textarea
-                  value={appointmentForm.reason}
-                  onChange={(e) => setAppointmentForm({ ...appointmentForm, reason: e.target.value })}
-                  rows={3}
-                  placeholder="e.g. Follow-up on blood report, sharp back pain..."
-                  className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all resize-none"
-                />
-              </div>
-              <div className="flex gap-4 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowNewAppointment(false)}
-                  className="flex-1 py-4 text-slate-500 font-bold text-sm bg-slate-50 hover:bg-slate-100 rounded-2xl transition-all"
-                >
-                  Discard
-                </button>
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="flex-1 py-4 bg-[#005c55] text-white font-bold text-sm rounded-2xl shadow-lg shadow-[#005c55]/20 hover:shadow-[#005c55]/40 transition-all disabled:opacity-50 active:scale-95"
-                >
-                  {submitting ? "Booking..." : "Confirm Booking"}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-    </div>
+              </form>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 }
