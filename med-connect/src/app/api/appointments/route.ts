@@ -124,6 +124,60 @@ export async function GET(request: Request) {
       return NextResponse.json({ appointments: formattedAppointments, patients: formattedPatients });
     }
 
+    if (type === "slots") {
+      const doctorId = searchParams.get("doctorId"); // This is the user ID from the frontend
+      const dateStr = searchParams.get("date");
+
+      if (!doctorId || !dateStr) {
+        return NextResponse.json({ errorMessage: "Doctor ID and Date are required" }, { status: 400 });
+      }
+
+      // Find the doctor record
+      const doctor = await prisma.doctor.findUnique({
+        where: { userId: doctorId },
+        include: { availableSlots: true }
+      });
+
+      if (!doctor) {
+        return NextResponse.json({ errorMessage: "Doctor not found" }, { status: 404 });
+      }
+
+      // Map JS day to Prisma DayOfWeek enum
+      const dayMap: any = {
+        0: "SUN", 1: "MON", 2: "TUE", 3: "WED", 4: "THU", 5: "FRI", 6: "SAT"
+      };
+      const date = new Date(dateStr);
+      const dayOfWeek = dayMap[date.getDay()];
+
+      // Get slots for this day
+      const dailySlots = doctor.availableSlots.filter(s => s.day === dayOfWeek);
+
+      // Get existing appointments for this doctor on this specific date
+      // We need to compare only the DATE part (ignoring time)
+      const existingAppointments = await prisma.appointment.findMany({
+        where: {
+          doctorId: doctor.id,
+          date: {
+            gte: new Date(dateStr + "T00:00:00Z"),
+            lte: new Date(dateStr + "T23:59:59Z")
+          },
+          status: { not: "CANCELLED" }
+        },
+        select: { timeSlot: true }
+      });
+
+      const bookedSlots = existingAppointments.map(a => a.timeSlot);
+
+      // Filter available slots
+      const availableSlots = dailySlots.map(s => ({
+        id: s.id,
+        time: `${s.startTime} - ${s.endTime}`,
+        isBooked: bookedSlots.includes(`${s.startTime} - ${s.endTime}`)
+      })).filter(s => !s.isBooked);
+
+      return NextResponse.json({ slots: availableSlots });
+    }
+
     const appointments = await prisma.appointment.findMany({
       include: {
         doctor: { include: { user: { select: { name: true, email: true } } } },

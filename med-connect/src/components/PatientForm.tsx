@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 interface PatientFormProps {
   onClose?: () => void;
@@ -17,10 +18,14 @@ export default function PatientForm({ onClose }: PatientFormProps) {
     emergencyPhone: '',
   });
 
-  const [allergies, setAllergies] = useState<string[]>(['Peanuts', 'Penicillin']);
+  const [allergies, setAllergies] = useState<string[]>([]);
   const [newAllergy, setNewAllergy] = useState('');
   const [addingAllergy, setAddingAllergy] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
+
+  const { data: session } = useSession();
 
   const bloodGroups = ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"];
   const genders = ["Female", "Male", "Other"];
@@ -42,12 +47,45 @@ export default function PatientForm({ onClose }: PatientFormProps) {
     setAddingAllergy(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload = { ...formData, allergies };
-    console.log("Patient Data submitted:", payload);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    setSubmitting(true);
+    setError('');
+
+    try {
+      const payload = {
+        fullName: formData.fullName,
+        dateOfBirth: formData.dateOfBirth || null,
+        bloodGroup: formData.bloodGroup || null,
+        gender: formData.gender,
+        allergies,
+        medicalHistory: formData.medicalHistory || null,
+        emergencyContactName: formData.emergencyName || null,
+        emergencyContactRelationship: formData.emergencyRelationship || null,
+        emergencyContactPhone: formData.emergencyPhone || null,
+      };
+
+      const res = await fetch('/api/patient-profile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.error || 'Failed to save profile');
+      }
+
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+        if (onClose) onClose();
+      }, 2000);
+    } catch (err: any) {
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -72,6 +110,14 @@ export default function PatientForm({ onClose }: PatientFormProps) {
           <div className="mb-6 flex items-center gap-3 p-4 bg-[#80f9c8]/30 border border-[#80f9c8] rounded-2xl text-[#006c4e] font-semibold animate-in fade-in">
             <span className="material-symbols-outlined">check_circle</span>
             Profile saved successfully!
+          </div>
+        )}
+
+        {/* Error Banner */}
+        {error && (
+          <div className="mb-6 flex items-center gap-3 p-4 bg-[#ffdad6]/60 border border-[#ffdad6] rounded-2xl text-[#ba1a1a] font-semibold animate-in fade-in">
+            <span className="material-symbols-outlined">error</span>
+            {error}
           </div>
         )}
 
@@ -295,11 +341,16 @@ export default function PatientForm({ onClose }: PatientFormProps) {
             )}
             <button
               type="submit"
-              className="px-10 py-4 text-white font-bold rounded-full shadow-lg shadow-[#005c55]/20 hover:saturate-150 transition-all active:scale-95 flex items-center gap-2"
+              disabled={submitting}
+              className="px-10 py-4 text-white font-bold rounded-full shadow-lg shadow-[#005c55]/20 hover:saturate-150 transition-all active:scale-95 flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
               style={{ background: 'linear-gradient(135deg, #005c55, #0f766e)' }}
             >
-              <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>save</span>
-              Save Changes
+              {submitting ? (
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              ) : (
+                <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>save</span>
+              )}
+              {submitting ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
         </form>

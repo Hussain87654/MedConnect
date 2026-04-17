@@ -1,7 +1,5 @@
 "use server"
-import { PrismaClient } from '@prisma/client'
-
-const prisma = new PrismaClient()
+import prisma from '@/lib/prisma'
 
 export async function saveDoctorProfile(data: any) {
   try {
@@ -11,13 +9,21 @@ export async function saveDoctorProfile(data: any) {
         qualifications: data.qualifications,
         experience: parseInt(data.experience),
         fee: parseInt(data.fee),
+        bio: data.bio || null,
         isAvailable: data.isAvailable,
         user: {
           create: {
-            name: "Test Doctor",
-            email: `doc${Math.random()}@test.com`,
+            name: data.name || "Practitioner",
+            email: `doc${Math.random()}@clinical.com`,
             role: "DOCTOR"
           }
+        },
+        availableSlots: {
+          create: data.slots.map((s: any) => ({
+            day: s.day,
+            startTime: s.startTime,
+            endTime: s.endTime,
+          }))
         }
       },
     })

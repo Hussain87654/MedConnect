@@ -39,17 +39,24 @@ model Doctor {
   appointments   Appointment[]
   user           User          @relation(fields: [userId], references: [id])
   availableSlots Slot[]
+  prescriptions  Prescription[]
 }
 
 model Patient {
-  id             String        @id @default(cuid())
-  userId         String        @unique
-  dateOfBirth    DateTime?
-  bloodGroup     String?
-  allergies      String[]
-  medicalHistory String?
-  appointments   Appointment[]
-  user           User          @relation(fields: [userId], references: [id])
+  id                          String        @id @default(cuid())
+  userId                      String        @unique
+  fullName                    String?
+  dateOfBirth                 DateTime?
+  bloodGroup                  String?
+  gender                      String?
+  allergies                   String[]
+  medicalHistory              String?
+  emergencyContactName        String?
+  emergencyContactRelationship String?
+  emergencyContactPhone       String?
+  appointments                Appointment[]
+  prescriptions               Prescription[]
+  user                        User          @relation(fields: [userId], references: [id])
 }
 
 model Appointment {
@@ -141,4 +148,19 @@ enum DayOfWeek {
   FRI
   SAT
   SUN
+}
+model Prescription {
+  id            String   @id @default(cuid())
+  doctorId      String
+  patientId     String
+  medication    String
+  dosage        String
+  frequency     String
+  duration      String
+  refills       Int      @default(0)
+  instructions  String?
+  status        String   @default("ACTIVE")
+  createdAt     DateTime @default(now())
+  doctor        Doctor   @relation(fields: [doctorId], references: [id])
+  patient       Patient  @relation(fields: [patientId], references: [id])
 }

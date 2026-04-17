@@ -26,6 +26,31 @@ interface Doctor {
   isAvailable?: boolean;
 }
 
+interface Prescription {
+  id: string;
+  medication: string;
+  dosage: string;
+  frequency: string;
+  duration: string;
+  refills: number;
+  instructions: string;
+  status: string;
+  createdAt: string;
+  doctor?: {
+    user: {
+      name: string;
+    };
+  };
+}
+
+interface PatientProfile {
+  fullName: string | null;
+  bloodGroup: string | null;
+  gender: string | null;
+  allergies: string[];
+  medicalHistory: string | null;
+}
+
 interface PatientDashboardProps {
   user: {
     id: string;
@@ -54,10 +79,67 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
     pending: 0,
   });
 
+  const [patientProfile, setPatientProfile] = useState<PatientProfile | null>(null);
+  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+  const [availableSlots, setAvailableSlots] = useState<{id: string, time: string}[]>([]);
+  const [loadingSlots, setLoadingSlots] = useState(false);
+  const [loadingPrescriptions, setLoadingPrescriptions] = useState(true);
+
+  useEffect(() => {
+    if (selectedDoctor && appointmentForm.date) {
+      fetchAvailableSlots();
+    } else {
+      setAvailableSlots([]);
+    }
+  }, [selectedDoctor, appointmentForm.date]);
+
+  const fetchAvailableSlots = async () => {
+    setLoadingSlots(true);
+    try {
+      const res = await fetch(`/api/appointments?type=slots&doctorId=${selectedDoctor}&date=${appointmentForm.date}`);
+      const data = await res.json();
+      if (data.slots) {
+        setAvailableSlots(data.slots);
+      }
+    } catch (error) {
+      console.error("Error fetching slots:", error);
+    } finally {
+      setLoadingSlots(false);
+    }
+  };
+
   useEffect(() => {
     fetchAppointments();
     fetchDoctors();
+    fetchPatientProfile();
+    fetchPrescriptions();
   }, []);
+
+  const fetchPatientProfile = async () => {
+    try {
+      const res = await fetch("/api/patient-profile");
+      const data = await res.json();
+      if (data.patient) {
+        setPatientProfile(data.patient);
+      }
+    } catch (error) {
+      console.error("Error fetching patient profile:", error);
+    }
+  };
+
+  const fetchPrescriptions = async () => {
+    try {
+      const res = await fetch("/api/prescriptions");
+      const data = await res.json();
+      if (data.prescriptions) {
+        setPrescriptions(data.prescriptions);
+      }
+    } catch (error) {
+      console.error("Error fetching prescriptions:", error);
+    } finally {
+      setLoadingPrescriptions(false);
+    }
+  };
 
   const fetchAppointments = async () => {
     try {
@@ -298,55 +380,76 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
             )}
           </section>
 
-          {/* Appointment History Table */}
+          {/* Prescriptions History Section */}
           <section>
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold font-headline">Recent History</h2>
-              <div className="flex gap-2">
-                <button className="p-2 rounded-lg bg-[#f2f4f6] text-slate-600 hover:bg-slate-200 transition-colors">
-                  <span className="material-symbols-outlined">filter_list</span>
-                </button>
-                <button className="p-2 rounded-lg bg-[#f2f4f6] text-slate-600 hover:bg-slate-200 transition-colors">
-                  <span className="material-symbols-outlined">download</span>
-                </button>
+            <div className="flex items-center justify-between mb-6 pt-4">
+              <h2 className="text-2xl font-bold font-headline">Prescriptions & Orders</h2>
+              <span className="text-xs font-bold text-[#005c55] bg-[#80f9c8]/30 px-3 py-1 rounded-full uppercase tracking-wider">
+                Digital Scripts
+              </span>
+            </div>
+            
+            {loadingPrescriptions ? (
+              <div className="p-8 text-center bg-[#f2f4f6] rounded-2xl">
+                <div className="w-8 h-8 border-3 border-[#005c55] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                <p className="text-slate-500 text-sm">Fetching your prescriptions...</p>
               </div>
-            </div>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-separate border-spacing-y-2">
-                <thead>
-                  <tr className="text-[#3e4947] text-[10px] uppercase tracking-widest font-bold">
-                    <th className="px-6 py-3">Date</th>
-                    <th className="px-6 py-3">Provider</th>
-                    <th className="px-6 py-3">Type</th>
-                    <th className="px-6 py-3">Outcome</th>
-                    <th className="px-6 py-3">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="text-sm">
-                  {appointments.length > 0 ? (
-                    appointments.map((apt) => (
-                      <tr key={apt.id} className="bg-[#f2f4f6] hover:bg-white transition-colors">
-                        <td className="px-6 py-5 rounded-l-2xl font-medium">{apt.date}</td>
-                        <td className="px-6 py-5">Dr. {apt.doctorName}</td>
-                        <td className="px-6 py-5">{apt.reason || "Consultation"}</td>
-                        <td className="px-6 py-5">{getStatusBadge(apt.status)}</td>
-                        <td className="px-6 py-5 rounded-r-2xl">
-                          <button className="text-[#005c55] font-bold hover:scale-105 transition-transform">
-                            Report
-                          </button>
-                        </td>
-                      </tr>
-                    ))
-                  ) : (
-                    <tr>
-                      <td colSpan={5} className="px-6 py-8 text-center text-slate-400 font-medium">
-                        No historical records found.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
+            ) : prescriptions.length === 0 ? (
+              <div className="p-10 text-center bg-[#f2f4f6] rounded-2xl border border-dashed border-slate-200">
+                <span className="material-symbols-outlined text-4xl text-slate-300 mb-3 block">medication</span>
+                <p className="text-slate-500 font-medium">No prescriptions found.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {prescriptions.map((px) => (
+                  <div key={px.id} className="bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition-all group">
+                    <div className="flex justify-between items-start mb-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#f2f4f6] flex items-center justify-center text-[#005c55] group-hover:bg-[#005c55] group-hover:text-white transition-colors">
+                          <span className="material-symbols-outlined text-xl">pill</span>
+                        </div>
+                        <div>
+                          <h4 className="font-bold text-[#191c1e]">{px.medication}</h4>
+                          <p className="text-[10px] text-[#3e4947] font-bold uppercase tracking-widest">
+                            Dr. {px.doctor?.user?.name || "Specialist"}
+                          </p>
+                        </div>
+                      </div>
+                      <span className={`px-2 py-0.5 rounded-full text-[9px] font-bold uppercase ${
+                        px.status === "ACTIVE" ? "bg-teal-50 text-teal-700" : "bg-slate-50 text-slate-400"
+                      }`}>
+                        {px.status}
+                      </span>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-4 py-3 border-t border-slate-50">
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">Dosage</p>
+                        <p className="text-sm font-semibold text-[#191c1e]">{px.dosage}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">Frequency</p>
+                        <p className="text-sm font-semibold text-[#191c1e]">{px.frequency}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">Duration</p>
+                        <p className="text-sm font-semibold text-[#191c1e]">{px.duration}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-slate-400 font-bold uppercase">Date Issued</p>
+                        <p className="text-sm font-semibold text-[#191c1e]">{new Date(px.createdAt).toLocaleDateString()}</p>
+                      </div>
+                    </div>
+                    
+                    {px.instructions && (
+                      <div className="mt-3 p-3 bg-slate-50 rounded-xl">
+                        <p className="text-[10px] text-[#3e4947] italic">Note: {px.instructions}</p>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
           </section>
         </div>
 
@@ -361,9 +464,15 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
             <div className="space-y-3">
               <label className="text-[10px] uppercase tracking-widest font-bold text-[#3e4947]">Active Allergies</label>
               <div className="flex flex-wrap gap-2">
-                <span className="px-4 py-2 bg-[#ffdad6] text-[#93000a] rounded-full text-xs font-bold">Penicillin</span>
-                <span className="px-4 py-2 bg-[#ffdad6] text-[#93000a] rounded-full text-xs font-bold">Peanuts</span>
-                <span className="px-4 py-2 bg-[#ffdad6] text-[#93000a] rounded-full text-xs font-bold">Latex</span>
+                {patientProfile && patientProfile.allergies && patientProfile.allergies.length > 0 ? (
+                  patientProfile.allergies.map((allergy, i) => (
+                    <span key={i} className="px-4 py-2 bg-[#ffdad6] text-[#93000a] rounded-full text-xs font-bold">
+                      {allergy}
+                    </span>
+                  ))
+                ) : (
+                  <span className="text-xs text-[#3e4947] italic">No allergies reported</span>
+                )}
               </div>
             </div>
 
@@ -371,36 +480,32 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
             <div className="space-y-3 pt-4 border-t border-slate-200">
               <label className="text-[10px] uppercase tracking-widest font-bold text-[#3e4947]">Current Medications</label>
               <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-[#191c1e]">Lisinopril</p>
-                    <p className="text-xs text-[#3e4947]">10mg • Once Daily</p>
+                {prescriptions.filter(p => p.status === "ACTIVE").slice(0, 3).map((px) => (
+                  <div key={px.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-bold text-[#191c1e]">{px.medication}</p>
+                      <p className="text-xs text-[#3e4947]">{px.dosage} • {px.frequency}</p>
+                    </div>
+                    <span className="material-symbols-outlined text-[#005c55] text-xl">check_circle</span>
                   </div>
-                  <span className="material-symbols-outlined text-[#005c55]">check_circle</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-bold text-[#191c1e]">Vitamin D3</p>
-                    <p className="text-xs text-[#3e4947]">2000 IU • Once Daily</p>
-                  </div>
-                  <span className="material-symbols-outlined text-[#005c55]">check_circle</span>
-                </div>
+                ))}
+                {prescriptions.filter(p => p.status === "ACTIVE").length === 0 && (
+                  <p className="text-xs text-[#3e4947] italic">No active medications</p>
+                )}
               </div>
             </div>
 
-            {/* Vitals */}
+            {/* General Info */}
             <div className="space-y-3 pt-4 border-t border-slate-200">
-              <label className="text-[10px] uppercase tracking-widest font-bold text-[#3e4947]">Last Recorded Vitals</label>
+              <label className="text-[10px] uppercase tracking-widest font-bold text-[#3e4947]">Essential Info</label>
               <div className="grid grid-cols-2 gap-4">
                 <div className="bg-white p-4 rounded-2xl text-center">
-                  <p className="text-[10px] text-slate-400 font-bold uppercase">Blood Pressure</p>
-                  <p className="text-xl font-extrabold text-teal-800">120/80</p>
-                  <p className="text-[10px] text-[#006c4e] font-bold">Optimal</p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase">Blood Group</p>
+                  <p className="text-xl font-extrabold text-teal-800">{patientProfile?.bloodGroup || "—"}</p>
                 </div>
                 <div className="bg-white p-4 rounded-2xl text-center">
-                  <p className="text-[10px] text-slate-400 font-bold uppercase">Heart Rate</p>
-                  <p className="text-xl font-extrabold text-teal-800">72 bpm</p>
-                  <p className="text-[10px] text-[#006c4e] font-bold">Resting</p>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase">Gender</p>
+                  <p className="text-xl font-extrabold text-teal-800">{patientProfile?.gender || "—"}</p>
                 </div>
               </div>
             </div>
@@ -435,7 +540,10 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
             >
               <span className="material-symbols-outlined">close</span>
             </button>
-            <PatientForm onClose={() => setShowProfileForm(false)} />
+            <PatientForm onClose={() => {
+              setShowProfileForm(false);
+              fetchPatientProfile();
+            }} />
           </div>
         </div>
       )}
@@ -485,15 +593,44 @@ export function PatientDashboard({ user }: PatientDashboardProps) {
                     className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all"
                   />
                 </div>
-                <div className="space-y-1">
-                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Preferred Time</label>
-                  <input
-                    type="time"
-                    value={appointmentForm.time}
-                    onChange={(e) => setAppointmentForm({ ...appointmentForm, time: e.target.value })}
-                    required
-                    className="w-full px-4 py-3 bg-[#f2f4f6] border-none rounded-2xl text-sm focus:ring-2 focus:ring-[#005c55]/20 outline-none transition-all"
-                  />
+                <div className="md:col-span-2 space-y-2">
+                  <label className="text-xs font-bold text-[#3e4947] uppercase tracking-widest pl-1">Authorized Time Slots</label>
+                  
+                  {loadingSlots ? (
+                    <div className="flex items-center gap-2 p-4 bg-[#f2f4f6] rounded-2xl animate-pulse">
+                      <div className="w-4 h-4 border-2 border-[#005c55] border-t-transparent rounded-full animate-spin" />
+                      <span className="text-xs font-bold text-slate-400">Fetching available hours...</span>
+                    </div>
+                  ) : !selectedDoctor || !appointmentForm.date ? (
+                    <div className="p-4 bg-slate-50 border-2 border-dashed border-slate-200 rounded-2xl text-center">
+                       <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-relaxed">
+                         Select a doctor and date to<br/>view available slots
+                       </p>
+                    </div>
+                  ) : availableSlots.length === 0 ? (
+                    <div className="p-4 bg-[#ffdad6]/20 border-2 border-dashed border-[#ffdad6] rounded-2xl text-center">
+                       <p className="text-[10px] font-bold text-[#93000a] uppercase tracking-widest">
+                         No available slots for this day
+                       </p>
+                    </div>
+                  ) : (
+                    <div className="grid grid-cols-2 gap-2">
+                      {availableSlots.map((slot) => (
+                        <button
+                          key={slot.id}
+                          type="button"
+                          onClick={() => setAppointmentForm({ ...appointmentForm, time: slot.time })}
+                          className={`px-4 py-3 rounded-2xl text-xs font-black transition-all border-2 ${
+                            appointmentForm.time === slot.time 
+                            ? 'bg-[#005c55] border-[#005c55] text-white shadow-lg' 
+                            : 'bg-[#f2f4f6] border-transparent text-[#3e4947] hover:bg-[#e0e3e5]'
+                          }`}
+                        >
+                          {slot.time}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="space-y-1">
