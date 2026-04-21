@@ -3,15 +3,17 @@
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { DashboardHeader, DashboardSidebar, AdminDashboard, DoctorDashboard, PatientDashboard } from "@/components";
+import { DashboardHeader, DashboardSidebar, AdminDashboard, DoctorDashboard, PatientDashboard, AppointmentsView, MessagesView, PatientsView, AnalyticsView, SettingsView } from "@/components";
 import { CustomCursor } from "@/components/CustomCursor";
 import PatientForm from "@/components/PatientForm";
+import DoctorProfileForm from "@/components/DoctorProfileForm";
 
 export default function DashboardPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [showProfileForm, setShowProfileForm] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [activeView, setActiveView] = useState("Dashboard");
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -61,7 +63,12 @@ export default function DashboardPage() {
       <CustomCursor />
       <div className="flex min-h-screen relative font-body bg-[#f7f9fb] text-[#191c1e]">
         <DashboardSidebar
-          onSettingsClick={isPatient ? () => setShowProfileForm(true) : undefined}
+          onSettingsClick={() => {
+            setActiveView("Settings");
+            setIsSidebarOpen(false);
+          }}
+          onMenuSelect={(item) => setActiveView(item)}
+          activeItem={activeView}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
         />
@@ -72,13 +79,18 @@ export default function DashboardPage() {
             onMenuClick={() => setIsSidebarOpen(true)}
           />
           <div className="p-4 md:p-8 space-y-8 overflow-y-auto">
-            {renderDashboard()}
+            {activeView === "Appointments" ? <AppointmentsView user={user} /> : 
+             activeView === "Messages" ? <MessagesView user={user} /> :
+             activeView === "Patients" ? <PatientsView user={user} /> :
+             activeView === "Analytics" ? <AnalyticsView user={user} /> :
+             activeView === "Settings" ? <SettingsView user={user} onUpdateProfile={() => setShowProfileForm(true)} /> :
+             renderDashboard()}
           </div>
         </main>
       </div>
 
-      {/* Patient Profile Form Modal — triggered from Settings button */}
-      {showProfileForm && isPatient && (
+      {/* Profile Form Modal */}
+      {showProfileForm && (
         <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center z-50 p-4">
           <div className="relative w-full max-w-4xl mx-auto max-h-[95vh] overflow-y-auto rounded-3xl bg-[#f7f9fb] shadow-2xl">
             {/* Close button */}
@@ -88,7 +100,15 @@ export default function DashboardPage() {
             >
               <span className="material-symbols-outlined">close</span>
             </button>
-            <PatientForm onClose={() => setShowProfileForm(false)} />
+            <div className="p-4 pt-12 md:p-8">
+              {user.role?.toUpperCase() === "DOCTOR" ? (
+                 <DoctorProfileForm />
+              ) : user.role?.toUpperCase() === "ADMIN" ? (
+                 <div className="text-center p-10"><p className="text-xl font-bold">Admin profile updates are restricted.</p></div>
+              ) : (
+                 <PatientForm onClose={() => setShowProfileForm(false)} />
+              )}
+            </div>
           </div>
         </div>
       )}

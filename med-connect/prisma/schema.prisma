@@ -22,8 +22,7 @@ model User {
   sessions      Session[]
   doctor        Doctor?
   patient       Patient?
-
-
+  messages      Message[]
 }
 
 model Doctor {
@@ -163,4 +162,12 @@ model Prescription {
   createdAt     DateTime @default(now())
   doctor        Doctor   @relation(fields: [doctorId], references: [id])
   patient       Patient  @relation(fields: [patientId], references: [id])
+}
+
+model Message {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

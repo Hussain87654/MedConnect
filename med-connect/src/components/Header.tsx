@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 interface HeaderProps {
   transparent?: boolean;
@@ -11,6 +12,12 @@ interface HeaderProps {
 export default function Header({ transparent = false }: HeaderProps) {
   const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <>
@@ -36,8 +43,13 @@ export default function Header({ transparent = false }: HeaderProps) {
           <button className="p-2 text-slate-600 hover:text-[#005c55] transition-colors">
             <span className="material-symbols-outlined">notifications</span>
           </button>
-          <button className="p-2 text-slate-600 hover:text-[#005c55] transition-colors">
-            <span className="material-symbols-outlined">dark_mode</span>
+          <button 
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} 
+            className="p-2 text-slate-600 hover:text-[#005c55] transition-colors"
+          >
+            <span className="material-symbols-outlined">
+              {mounted && theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
           </button>
           
           <Link href="/login" className="hidden sm:inline-flex ml-2 bg-[#e0e3e5] text-[#191c1e] px-6 py-2 rounded-full font-semibold text-sm hover:bg-[#e6e8ea] transition-all">

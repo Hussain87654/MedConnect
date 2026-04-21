@@ -440,4 +440,20 @@
 
 .backface-hidden {
   backface-visibility: hidden;
+}
+
+/* SMART INVERSION DARK MODE */
+html.dark {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/* Exempt images, videos, and icons from the inversion to keep them natural */
+html.dark img,
+html.dark video,
+html.dark [data-no-invert] {
+  filter: invert(1) hue-rotate(180deg);
+}
+/* Ensure the material symbols stay correctly colored if they rely on text color */
+html.dark .material-symbols-outlined {
+  filter: drop-shadow(0 0 0 white);
 }

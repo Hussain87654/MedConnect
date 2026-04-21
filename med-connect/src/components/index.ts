@@ -10,3 +10,8 @@ export { default as DashboardSidebar } from "./DashboardSidebar";
 export { AdminDashboard } from "./dashboards/AdminDashboard";
 export { DoctorDashboard } from "./dashboards/DoctorDashboard";
 export { PatientDashboard } from "./dashboards/PatientDashboard";
+export { AppointmentsView } from "./dashboards/AppointmentsView";
+export { MessagesView } from "./dashboards/MessagesView";
+export { PatientsView } from "./dashboards/PatientsView";
+export { AnalyticsView } from "./dashboards/AnalyticsView";
+export { SettingsView } from "./dashboards/SettingsView";

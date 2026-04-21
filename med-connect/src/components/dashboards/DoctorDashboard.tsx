@@ -60,7 +60,36 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
   const [showProfileForm, setShowProfileForm] = useState(false);
   const [showPrescriptionModal, setShowPrescriptionModal] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<"appointments" | "patients" | "prescriptions">("appointments");
+  const [activeTab, setActiveTab] = useState<"appointments" | "patients" | "prescriptions" | "availability">("appointments");
+  const [activeTabDay, setActiveTabDay] = useState('MON');
+  const [availabilityData, setAvailabilityData] = useState({
+    isAvailable: true,
+    slots: [] as any[]
+  });
+  const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+
+  const addSlot = () => {
+    const newSlot = { 
+      id: Math.random().toString(36).substr(2, 9),
+      day: activeTabDay, 
+      startTime: '09:00', 
+      endTime: '12:00' 
+    };
+    setAvailabilityData({ ...availabilityData, slots: [...availabilityData.slots, newSlot] });
+  };
+
+  const removeSlot = (id: string) => {
+    setAvailabilityData({ ...availabilityData, slots: availabilityData.slots.filter(s => s.id !== id) });
+  };
+
+  const updateSlot = (id: string, field: string, value: string) => {
+    setAvailabilityData({
+      ...availabilityData,
+      slots: availabilityData.slots.map(s => s.id === id ? { ...s, [field]: value } : s)
+    });
+  };
+
+  const currentDaySlots = availabilityData.slots.filter(s => s.day === activeTabDay);
   const [patientSearchTerm, setPatientSearchTerm] = useState("");
   const [stats, setStats] = useState({
     today: 0,
@@ -241,18 +270,27 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
     >
       {/* ── Header: Greeting & Quick Stats ── */}
       <motion.section variants={itemVariants} className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-        <div className="lg:col-span-2 space-y-2">
-          <h1 className="text-4xl font-extrabold tracking-tight text-teal-900 font-headline">
-            Welcome back, Dr. {user.name || "Specialist"}.
-          </h1>
-          <p className="text-on-surface-variant text-lg">
-            You have {stats.pending} pending appointment requests and {stats.today} consultations scheduled for today.
-          </p>
+        <div className="lg:col-span-2 space-y-4">
+          <div>
+            <h1 className="text-4xl font-extrabold tracking-tight text-teal-900 font-headline">
+              Welcome back, Dr. {user.name || "Specialist"}.
+            </h1>
+            <p className="text-on-surface-variant text-lg mt-2">
+              You have {stats.pending} pending appointment requests and {stats.today} consultations scheduled for today.
+            </p>
+          </div>
+          <button
+            onClick={() => setShowProfileForm(true)}
+            className="inline-flex items-center gap-2 px-5 py-2.5 bg-[#005c55] text-white font-bold rounded-xl shadow-[0_4px_14px_rgba(0,92,85,0.3)] hover:shadow-[0_6px_20px_rgba(0,92,85,0.4)] hover:bg-[#004e49] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-sm"
+          >
+            <span className="material-symbols-outlined text-sm">manage_accounts</span>
+            Update Profile
+          </button>
         </div>
         
-        <Card tilt padding="sm" className="bg-[#005c55] text-white flex flex-col justify-between border-none">
+        <Card tilt padding="sm" className="bg-[#80f9c8] text-[#00513a] flex flex-col justify-between border-none">
           <div className="flex justify-between items-start">
-            <span className="text-xs font-bold uppercase tracking-widest opacity-80">Today's Load</span>
+            <span className="text-xs font-bold uppercase  tracking-widest opacity-80">Today's Load</span>
             <span className="material-symbols-outlined opacity-40">calendar_today</span>
           </div>
           <div>
@@ -319,6 +357,19 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
                 <span className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-sm">history</span>
                   Prescriptions
+                </span>
+              </button>
+              <button
+                onClick={() => setActiveTab("availability")}
+                className={`px-5 py-2.5 rounded-xl text-sm font-bold transition-all whitespace-nowrap ${
+                  activeTab === "availability"
+                    ? "bg-white text-[#005c55] shadow-sm"
+                    : "text-[#3e4947] hover:text-[#005c55]"
+                }`}
+              >
+                <span className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-sm">event_available</span>
+                  Availability
                 </span>
               </button>
             </div>
@@ -523,6 +574,111 @@ export function DoctorDashboard({ user }: DoctorDashboardProps) {
                   </table>
                 </div>
               )}
+            </div>
+          )}
+
+          {/* Availability View */}
+          {activeTab === "availability" && (
+            <div className="bg-white rounded-xl p-6 border border-[#e0e3e5] shadow-sm relative overflow-hidden">
+               <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-[#005c55] to-[#80f9c8]"></div>
+               <h3 className="text-xl font-bold mb-6 font-['Plus_Jakarta_Sans'] text-[#005c55]">Availability Settings</h3>
+               
+               <div className="space-y-8">
+                  {/* Day Selection */}
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-bold text-[#3e4947] uppercase tracking-widest">Select Work Day</p>
+                    <div className="flex flex-wrap gap-2">
+                      {days.map(day => (
+                        <button
+                          key={day}
+                          type="button"
+                          onClick={() => setActiveTabDay(day)}
+                          className={`px-4 py-2 rounded-xl text-xs font-bold transition-all ${
+                            activeTabDay === day 
+                            ? 'bg-[#005c55] text-white shadow-lg' 
+                            : 'bg-[#f2f4f6] text-[#3e4947] hover:bg-[#e0e3e5]'
+                          }`}
+                        >
+                          {day.charAt(0) + day.slice(1).toLowerCase()}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Slots Management */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <p className="text-[10px] font-bold text-[#3e4947] uppercase tracking-widest">Time Slots ({activeTabDay})</p>
+                      <button 
+                        type="button"
+                        onClick={addSlot}
+                        className="text-[#0f766e] text-[10px] font-black uppercase tracking-tighter hover:underline px-2 py-1 rounded-md hover:bg-teal-50"
+                      >
+                        + Add Slot
+                      </button>
+                    </div>
+
+                    <div className="space-y-3 min-h-[100px]">
+                      {currentDaySlots.map(slot => (
+                        <div key={slot.id} className="flex items-center gap-2 p-3 bg-[#f2f4f6] rounded-xl group hover:bg-[#e0e3e5] transition-colors">
+                          <input 
+                            type="time" 
+                            value={slot.startTime}
+                            onChange={(e) => updateSlot(slot.id, 'startTime', e.target.value)}
+                            className="bg-transparent border-none p-0 text-xs font-bold w-full outline-none"
+                          />
+                          <span className="text-slate-400 text-[10px]">to</span>
+                          <input 
+                            type="time" 
+                            value={slot.endTime}
+                            onChange={(e) => updateSlot(slot.id, 'endTime', e.target.value)}
+                            className="bg-transparent border-none p-0 text-xs font-bold w-full outline-none"
+                          />
+                          <button 
+                            type="button"
+                            onClick={() => removeSlot(slot.id)}
+                            className="text-red-400 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity p-1 rounded-full hover:bg-red-50"
+                          >
+                            <span className="material-symbols-outlined text-sm">delete</span>
+                          </button>
+                        </div>
+                      ))}
+                      {currentDaySlots.length === 0 && (
+                        <div className="h-24 flex flex-col items-center justify-center border-2 border-dashed border-slate-200 rounded-2xl opacity-50 bg-[#f9fafb]">
+                          <span className="material-symbols-outlined text-slate-400 mb-1 text-2xl">event_busy</span>
+                          <p className="text-[10px] font-bold text-slate-400">No slots for {activeTabDay}</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Global Availability Toggle */}
+                  <div 
+                    onClick={() => setAvailabilityData({...availabilityData, isAvailable: !availabilityData.isAvailable})}
+                    className={`p-6 rounded-2xl cursor-pointer transition-all border-2 ${
+                      availabilityData.isAvailable 
+                      ? 'bg-[#80f9c8]/20 border-[#80f9c8] text-[#00513a] hover:bg-[#80f9c8]/30' 
+                      : 'bg-[#ffdad6]/20 border-[#ffdad6] text-[#93000a] hover:bg-[#ffdad6]/30'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between mb-2">
+                       <span className="font-bold uppercase tracking-wider text-[10px]">Portal Visibility</span>
+                       <span className={`material-symbols-outlined ${availabilityData.isAvailable ? 'text-[#006c4e]' : 'text-[#ba1a1a]'}`}>
+                         {availabilityData.isAvailable ? 'check_circle' : 'cancel'}
+                       </span>
+                    </div>
+                    <p className="text-lg font-black">{availabilityData.isAvailable ? 'Publicly Visible' : 'Hidden From Patients'}</p>
+                  </div>
+                  
+                  <div className="pt-4 border-t border-slate-100">
+                    <button 
+                      onClick={() => alert("Availability synced successfully!")}
+                      className="w-full bg-[#005c55] text-white font-bold py-3 rounded-xl shadow-lg hover:shadow-xl hover:bg-[#004e49] transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-sm"
+                    >
+                      Save Availability
+                    </button>
+                  </div>
+               </div>
             </div>
           )}
         </section>

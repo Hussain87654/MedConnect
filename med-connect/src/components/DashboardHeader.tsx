@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import { useTheme } from "next-themes";
 
 interface DashboardHeaderProps {
   userName?: string;
@@ -14,6 +16,13 @@ export default function DashboardHeader({
   userRole = "Admin",
   onMenuClick,
 }: DashboardHeaderProps) {
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   return (
     <motion.header 
       initial={{ y: -20, opacity: 0 }}
@@ -46,6 +55,18 @@ export default function DashboardHeader({
             className="text-slate-600 hover:text-teal-700 transition-colors cursor-pointer"
           >
             <span className="material-symbols-outlined">notifications</span>
+          </motion.button>
+          
+          {/* Theme Toggle Button */}
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            className="text-slate-600 hover:text-teal-700 transition-colors cursor-pointer"
+          >
+            <span className="material-symbols-outlined">
+              {mounted && theme === 'dark' ? 'light_mode' : 'dark_mode'}
+            </span>
           </motion.button>
           <motion.div
             whileHover={{ scale: 1.1 }}
