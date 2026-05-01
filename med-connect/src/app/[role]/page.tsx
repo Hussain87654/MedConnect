@@ -55,6 +55,7 @@ export default function RolePage({ params }: RolePageProps) {
           onSettingsClick={isPatient ? () => setShowProfileForm(true) : undefined}
           isOpen={isSidebarOpen}
           onClose={() => setIsSidebarOpen(false)}
+          userRole={user.role}
         />
         <main className="flex-1 flex flex-col min-w-0 bg-[#f7f9fb]">
           <DashboardHeader

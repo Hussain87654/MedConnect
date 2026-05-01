@@ -49,7 +49,7 @@ export async function getById(id: string) {
 }
 
 // Signup Logic
-export async function saveData(name: string, email: string, password: string) {
+export async function saveData(name: string, email: string, password: string, role: UserRole = "PATIENT") {
   const found = await getByEmail(email);
 
   if (found) {
@@ -64,15 +64,27 @@ export async function saveData(name: string, email: string, password: string) {
         name,
         email: email.toLowerCase(),
         password: hashedPassword,
-        role: "PATIENT",
+        role: role,
       },
     });
 
-    await tx.patient.create({
-      data: {
-        userId: newUser.id,
-      },
-    });
+    if (role === "PATIENT") {
+      await tx.patient.create({
+        data: {
+          userId: newUser.id,
+        },
+      });
+    } else if (role === "DOCTOR") {
+      await tx.doctor.create({
+        data: {
+          userId: newUser.id,
+          specialization: "General Physician",
+          qualifications: "",
+          experience: 0,
+          fee: 0,
+        },
+      });
+    }
 
     return newUser;
   });

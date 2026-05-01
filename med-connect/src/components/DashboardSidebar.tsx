@@ -9,9 +9,12 @@ interface DashboardSidebarProps {
   activeItem?: string;
   isOpen?: boolean;
   onClose?: () => void;
+  userRole?: string;
 }
 
-export default function DashboardSidebar({ onSettingsClick, onMenuSelect, activeItem = "Dashboard", isOpen = false, onClose }: DashboardSidebarProps) {
+export default function DashboardSidebar({ onSettingsClick, onMenuSelect, activeItem = "Dashboard", isOpen = false, onClose, userRole = "PATIENT" }: DashboardSidebarProps) {
+  const isPatient = userRole.toUpperCase() === "PATIENT";
+
   return (
     <>
       {/* Mobile Overlay */}
@@ -42,10 +45,10 @@ export default function DashboardSidebar({ onSettingsClick, onMenuSelect, active
         </motion.button>
         {[
           { icon: "calendar_today", label: "Appointments" },
-          { icon: "groups", label: "Patients" },
-          { icon: "chat_bubble", label: "Messages" },
-          { icon: "monitoring", label: "Analytics" },
-        ].map((item, i) => (
+          { icon: "groups", label: "Patients", hideForPatient: false },
+          { icon: "chat_bubble", label: "Messages", hideForPatient: true },
+          { icon: "monitoring", label: "Analytics", hideForPatient: false },
+        ].filter(item => !(item.hideForPatient && isPatient)).map((item, i) => (
           <motion.button 
             key={i}
             whileHover={{ x: 5, color: "#0f766e" }}

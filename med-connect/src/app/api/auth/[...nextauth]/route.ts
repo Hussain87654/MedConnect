@@ -39,6 +39,7 @@ export const authOptions: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        role: { label: "Role", type: "text" },
       },
       async authorize(credentials) {
         try {
@@ -57,6 +58,10 @@ export const authOptions: NextAuthOptions = {
           const isValid = await compare(credentials.password, user.password);
           if (!isValid) {
             throw new Error("Wrong password");
+          }
+
+          if (credentials.role && user.role !== credentials.role) {
+            throw new Error(`Invalid role. You are not registered as a ${credentials.role}`);
           }
 
           return {

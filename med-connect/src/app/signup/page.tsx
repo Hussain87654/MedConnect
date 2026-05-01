@@ -15,6 +15,7 @@ export default function SignupPage() {
     name: "",
     email: "",
     password: "",
+    role: "PATIENT",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -35,6 +36,7 @@ export default function SignupPage() {
           username: formData.name,
           email: formData.email,
           password: formData.password,
+          role: formData.role,
         }),
       });
 
@@ -116,6 +118,20 @@ export default function SignupPage() {
                   className="w-full bg-[#e8ebeb] border-2 border-transparent rounded-full py-4 pl-14 pr-6 focus:border-[#0d6e64]/20 focus:bg-white focus:ring-4 focus:ring-[#0d6e64]/5 outline-none transition-all font-medium"
                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 />
+              </div>
+
+              <div className="relative group">
+                <select
+                  value={formData.role}
+                  className="w-full bg-[#e8ebeb] border-2 border-transparent rounded-full py-4 px-6 focus:border-[#0d6e64]/20 focus:bg-white focus:ring-4 focus:ring-[#0d6e64]/5 outline-none transition-all font-medium appearance-none"
+                  onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+                >
+                  <option value="PATIENT">Patient</option>
+                  <option value="DOCTOR">Doctor</option>
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-6 text-slate-500">
+                  <span className="material-symbols-outlined">expand_more</span>
+                </div>
               </div>
 
               <button

@@ -4,7 +4,7 @@ import { saveData } from "../../../../../services/authService";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { username, email, password } = body;
+    const { username, email, password, role } = body;
 
     // 2. Validation
     if (!username || !email || !password) {
@@ -14,7 +14,7 @@ export async function POST(request: Request) {
       );
     }
 
-    await saveData(username, email, password);
+    await saveData(username, email, password, role);
 
     return NextResponse.json(
       { message: "User registered successfully" },
